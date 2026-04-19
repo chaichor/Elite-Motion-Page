@@ -16,10 +16,10 @@ export async function POST(request: Request) {
     // Submit to Web3Forms (Envía los correos a: elite.compainsv@gmail.com)
     // Para que funcione, debes crear tu Access Key en https://web3forms.com con ese correo
     // y agregarla como variable de entorno WEB3FORMS_KEY en Vercel.
-    if (!process.env.WEB3FORMS_KEY) {
-      console.error('ERROR: WEB3FORMS_KEY no está configurada en las variables de entorno.');
+    if (!process.env.WEB3FORMS_KEY || process.env.WEB3FORMS_KEY === 'YOUR_ACCESS_KEY_HERE') {
+      console.error('ERROR: WEB3FORMS_KEY no detectada. Verifica en Vercel -> Settings -> Environment Variables.');
       return NextResponse.json(
-        { error: 'Configuración incompleta en el servidor.' },
+        { error: 'Error de configuración: La clave WEB3FORMS_KEY no está presente en el servidor.' },
         { status: 500 }
       );
     }

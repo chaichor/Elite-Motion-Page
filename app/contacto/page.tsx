@@ -139,23 +139,40 @@ export default function Contacto() {
     e.preventDefault();
     setStatus('sending');
     setErrorMsg('');
+
     try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+      // Usamos FormData como recomienda Web3Forms para máxima compatibilidad
+      const formData = new FormData();
+      formData.append("access_key", "8fc63f3d-b7d8-4731-82fc-de52c00848f1");
+      formData.append("subject", `Nueva Cotización: ${form.servicio} — ${form.nombre}`);
+      formData.append("from_name", "Elite Motion Website");
+      
+      // Agregamos todos los campos del formulario
+      Object.entries(form).forEach(([key, value]) => {
+        formData.append(key, value);
       });
-      const data = await res.json();
+
+      // Campo 'message' consolidado para asegurar la recepción
+      formData.append("message", `Cliente: ${form.nombre}\nServicio: ${form.servicio}\nPresupuesto: ${form.presupuesto}\nDescripción: ${form.descripcion}`);
+
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+
       if (data.success) {
         setStatus('sent');
         setForm({ nombre: '', email: '', telefono: '', servicio: '', presupuesto: '', descripcion: '' });
       } else {
         setStatus('error');
-        setErrorMsg(data.error ?? 'Error inesperado. Intenta de nuevo.');
+        setErrorMsg(data.message || 'Error al enviar el formulario.');
       }
-    } catch {
+    } catch (err) {
+      console.error(err);
       setStatus('error');
-      setErrorMsg('No se pudo conectar. Intenta de nuevo o contáctanos por WhatsApp.');
+      setErrorMsg('No se pudo conectar con el servidor de correos. Intenta por WhatsApp.');
     }
   };
 
