@@ -16,6 +16,14 @@ export async function POST(request: Request) {
     // Submit to Web3Forms (Envía los correos a: elite.compainsv@gmail.com)
     // Para que funcione, debes crear tu Access Key en https://web3forms.com con ese correo
     // y agregarla como variable de entorno WEB3FORMS_KEY en Vercel.
+    if (!process.env.WEB3FORMS_KEY) {
+      console.error('ERROR: WEB3FORMS_KEY no está configurada en las variables de entorno.');
+      return NextResponse.json(
+        { error: 'Configuración incompleta en el servidor.' },
+        { status: 500 }
+      );
+    }
+
     // Submit to Web3Forms
     const web3Response = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
@@ -40,9 +48,10 @@ export async function POST(request: Request) {
     if (data.success) {
       return NextResponse.json({ success: true });
     } else {
+      console.error('Web3Forms Error:', data); // Esto aparecerá en los logs de Vercel
       return NextResponse.json(
-        { error: 'Error al enviar el formulario. Intenta de nuevo.' },
-        { status: 500 }
+        { error: data.message || 'Error al enviar el formulario.' },
+        { status: web3Response.status }
       );
     }
   } catch {
