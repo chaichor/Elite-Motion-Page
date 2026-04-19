@@ -193,8 +193,16 @@ const quoteServices = [
 
 /* ─── Sub-components ────────────────────────────────────── */
 
+type Plan = {
+  id: string;
+  name: string;
+  price: number;
+  badge: string | null;
+  features: Record<string, string | boolean>;
+};
+
 type TableProps = {
-  plans: typeof inmobiliariosPlans;
+  plans: Plan[];
   color: string;
   notes?: string[];
 };
@@ -243,7 +251,7 @@ function PricingTable({ plans, color, notes }: TableProps) {
             <tr key={key} className="price-table-row">
               <td className="price-table-feature-label">{key}</td>
               {plans.map((plan, i) => {
-                const val = plan.features[key as keyof typeof plan.features];
+                const val = plan.features[key];
                 return (
                   <td
                     key={plan.id}
