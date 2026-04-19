@@ -33,7 +33,9 @@ export async function POST(request: Request) {
         subject: `Nueva Cotización: ${servicio} — ${nombre}`,
         from_name: 'Elite Motion Website',
         replyto: email,
-        // Al enviar los campos por separado, Web3Forms los organiza en una tabla profesional en tu correo
+        // Algunos planes de Web3Forms requieren el campo 'message' como obligatorio
+        message: `Cliente: ${nombre}\nServicio: ${servicio}\nPresupuesto: ${presupuesto}\nDescripción: ${descripcion}`,
+        // Campos individuales para la tabla organizada
         nombre,
         email,
         telefono: telefono || 'No indicado',
