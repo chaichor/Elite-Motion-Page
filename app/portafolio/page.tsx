@@ -258,7 +258,6 @@ export default function Portafolio() {
                                                     <video 
                                                         muted loop playsInline 
                                                         preload="none"
-                                                        poster={asset.poster}
                                                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                                     >
                                                         <source src={asset.url} type="video/mp4" />
