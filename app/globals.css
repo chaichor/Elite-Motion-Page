@@ -692,10 +692,10 @@ a {
 
 .em-hero-title {
   font-family: var(--em-ff);
-  font-size: clamp(2.4rem, 6vw, 5rem);
+  font-size: clamp(1.8rem, 8vw, 4.5rem);
   font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
   color: #fafafa;
   margin: 0;
 }
@@ -988,7 +988,12 @@ a {
 }
 
 .em-portfolio-card:hover {
-  transform: scale(1.02);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px rgba(0,229,255,0.1);
+}
+
+.em-portfolio-card:hover .portfolio-bg-media {
+  transform: scale(1.15);
 }
 
 .em-portfolio-overlay {

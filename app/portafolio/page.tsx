@@ -1,13 +1,9 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import { Play, X, ZoomIn } from 'lucide-react';
-
-if (typeof window !== 'undefined') {
-    gsap.registerPlugin(ScrollTrigger);
-}
 
 const assets = [
     { type: 'video', url: '/videos_vertical_portafolio/yaxhe_emprendimiento_sombreros_personalizados.mp4', title: 'Sombreros Personalizados' },
@@ -21,19 +17,19 @@ const assets = [
     { type: 'image', url: '/img_portafolio/yaxhe 7 (1).webp', title: 'Sesión de Producto 07' },
     { type: 'image', url: '/img_portafolio/yaxhe 8 (1).webp', title: 'Sesión de Producto 08' },
     { type: 'image', url: '/img_portafolio/yaxhe 9 (1).webp', title: 'Sesión de Producto 09' },
-    { type: 'image', url: '/img_portafolio/Post 01.webp', title: 'Post 01' },
-    { type: 'image', url: '/img_portafolio/Post 02.webp', title: 'Post 02' },
-    { type: 'image', url: '/img_portafolio/Post 03.webp', title: 'Post 03' },
-    { type: 'image', url: '/img_portafolio/Post 04.webp', title: 'Post 04' },
+    { type: 'image', url: '/img_portafolio/Post 01.webp', title: 'Sesión Fotográfica 01' },
+    { type: 'image', url: '/img_portafolio/Post 02.webp', title: 'Sesión Fotográfica 02' },
+    { type: 'image', url: '/img_portafolio/Post 03.webp', title: 'Sesión Fotográfica 03' },
+    { type: 'image', url: '/img_portafolio/Post 04.webp', title: 'Sesión Fotográfica 04' },
     { type: 'logo', url: '', title: '' },
-    { type: 'image', url: '/img_portafolio/Post 05.webp', title: 'Post 05' },
-    { type: 'image', url: '/img_portafolio/Post 06.webp', title: 'Post 06' },
-    { type: 'image', url: '/img_portafolio/Post 07.webp', title: 'Post 07' },
-    { type: 'image', url: '/img_portafolio/Post 08.webp', title: 'Post 08' },
-    { type: 'image', url: '/img_portafolio/Post 09.webp', title: 'Post 09' },
+    { type: 'image', url: '/img_portafolio/Post 05.webp', title: 'Sesión Fotográfica 05' },
+    { type: 'image', url: '/img_portafolio/Post 06.webp', title: 'Sesión Fotográfica 06' },
+    { type: 'image', url: '/img_portafolio/Post 07.webp', title: 'Sesión Fotográfica 07' },
+    { type: 'image', url: '/img_portafolio/Post 08.webp', title: 'Sesión Fotográfica 08' },
+    { type: 'image', url: '/img_portafolio/Post 09.webp', title: 'Sesión Fotográfica 09' },
     { type: 'logo', url: '', title: '' },
-    { type: 'image', url: '/img_portafolio/Post 10.webp', title: 'Post 10' },
-    { type: 'image', url: '/img_portafolio/Post 11.webp', title: 'Post 11' },
+    { type: 'image', url: '/img_portafolio/Post 10.webp', title: 'Sesión Fotográfica 10' },
+    { type: 'image', url: '/img_portafolio/Post 11.webp', title: 'Sesión Fotográfica 11' },
 ];
 
 export default function Portafolio() {
@@ -42,59 +38,14 @@ export default function Portafolio() {
     const [progress, setProgress] = useState(0);
     const introRef = useRef<HTMLDivElement>(null);
 
-    // Asset Preloading Logic (Solo esperamos los primeros 8 para que la página sea rápida)
+    // Asset Preloading removed for instant rendering
     useEffect(() => {
-        const priorityAssets = assets.slice(0, 8).filter(a => a.type === 'image' || a.type === 'video');
-        let loadedCount = 0;
-        
-        if (priorityAssets.length === 0) {
-            setIsLoading(false);
-            return;
-        }
-
-        const onAssetLoaded = () => {
-            loadedCount++;
-            setProgress(Math.round((loadedCount / priorityAssets.length) * 100));
-            if (loadedCount === priorityAssets.length) {
-                setTimeout(() => setIsLoading(false), 500);
-            }
-        };
-
-        priorityAssets.forEach(asset => {
-            if (asset.type === 'image') {
-                const img = new Image();
-                img.src = asset.url;
-                img.onload = onAssetLoaded;
-                img.onerror = onAssetLoaded;
-            } else if (asset.type === 'video') {
-                const video = document.createElement('video');
-                video.src = asset.url;
-                video.onloadeddata = onAssetLoaded;
-                video.onerror = onAssetLoaded;
-            }
-        });
+        setIsLoading(false);
     }, []);
 
     // Scroll Animations & Header Interactivity
     useEffect(() => {
-        // Optimized Animation for Portfolio Items (Fade and slide up, runs once per item)
-        const items = document.querySelectorAll('.portfolio-item-wrapper');
-        items.forEach((item) => {
-            gsap.fromTo(item, 
-                { opacity: 0, y: 40 },
-                {
-                    opacity: 1, 
-                    y: 0, 
-                    duration: 0.8,
-                    ease: "power3.out",
-                    scrollTrigger: {
-                        trigger: item,
-                        start: "top 90%",
-                        toggleActions: "play none none none"
-                    }
-                }
-            );
-        });
+        // Entry animations removed as per user request (keeping only hover)
 
         // Intro Header Parallax/Ambient movement
         const intro = introRef.current;
@@ -146,28 +97,7 @@ export default function Portafolio() {
 
     return (
         <main className="portfolio-page" style={{ backgroundColor: '#101214', color: '#fff', overflowX: 'hidden' }}>
-            {isLoading && (
-                <div style={{
-                    position: 'fixed', inset: 0, zIndex: 9999, backgroundColor: '#101214',
-                    display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                    transition: 'opacity 0.5s ease', color: 'white'
-                }}>
-                    <img src="/imagotipo_blanco.png" alt="Cargando" style={{ maxWidth: '200px', marginBottom: '30px', animation: 'pulse 1.5s infinite ease-in-out' }} />
-                    <div style={{ width: '250px', height: '4px', background: 'rgba(255,255,255,0.1)', borderRadius: '4px', overflow: 'hidden' }}>
-                        <div style={{ width: `${progress}%`, height: '100%', background: 'var(--em-accent)', transition: 'width 0.3s ease' }} />
-                    </div>
-                    <p style={{ marginTop: '15px', fontSize: '0.8rem', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.7)' }}>
-                        CARGANDO {progress}%
-                    </p>
-                    <style>{`
-                        @keyframes pulse {
-                            0% { opacity: 0.6; transform: scale(0.98); }
-                            50% { opacity: 1; transform: scale(1); }
-                            100% { opacity: 0.6; transform: scale(0.98); }
-                        }
-                    `}</style>
-                </div>
-            )}
+            {/* Preloader removed for instant visualization */}
             {/* Intro Section */}
             <section ref={introRef} className="intro" style={{ 
                 minHeight: '100vh', display: 'flex', flexDirection: 'column', 
@@ -184,7 +114,7 @@ export default function Portafolio() {
                 <div className="intro-text text-center" style={{ position: 'relative', zIndex: 1 }}>
                     <span className="badge" style={{ marginBottom: '1rem', display: 'inline-block' }}>Showreel 2026</span>
                     <h1 style={{ 
-                        fontSize: 'clamp(4rem, 15vw, 12rem)', 
+                        fontSize: 'clamp(2.5rem, 15vw, 12rem)', 
                         textTransform: 'uppercase', 
                         lineHeight: 0.8, 
                         fontWeight: 900, 
@@ -193,7 +123,14 @@ export default function Portafolio() {
                         Elite <br />
                         <span className="text-accent" style={{ color: 'var(--em-accent)' }}>Motion</span>
                     </h1>
-                    <p style={{ marginTop: '2rem', fontSize: '1.2rem', color: 'rgba(255,255,255,0.6)', letterSpacing: '0.2em', textTransform: 'uppercase' }}>
+                    <p style={{ 
+                        marginTop: '2rem', 
+                        fontSize: 'clamp(0.8rem, 4vw, 1.2rem)', 
+                        color: 'rgba(255,255,255,0.6)', 
+                        letterSpacing: '0.15em', 
+                        textTransform: 'uppercase',
+                        padding: '0 1rem'
+                    }}>
                         { '{ Audiovisual Production SV }' }
                     </p>
                 </div>
@@ -224,9 +161,11 @@ export default function Portafolio() {
                                             alignItems: 'center', justifyContent: 'center',
                                             textAlign: 'center'
                                         }}>
-                                            <img
+                                            <Image
                                                 src="/imagotipo_blanco.png"
                                                 alt="Elite Motion"
+                                                width={220}
+                                                height={100}
                                                 style={{ 
                                                     width: '100%', maxWidth: '220px', height: 'auto',
                                                     opacity: 1
@@ -245,19 +184,20 @@ export default function Portafolio() {
                                             }}
                                         >
                                             {asset.type === 'image' ? (
-                                                <img 
+                                                <Image 
                                                     src={asset.url} 
                                                     alt={asset.title} 
-                                                    loading="lazy"
-                                                    decoding="async"
-                                                    style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
+                                                    fill
+                                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 25vw, 20vw"
+                                                    style={{ objectFit: 'cover', transition: 'transform 0.5s ease' }}
                                                     className="hover-scale"
+                                                    priority={index < 4}
                                                 />
                                             ) : (
                                                 <div style={{ position: 'relative', width: '100%', height: '100%' }}>
                                                     <video 
-                                                        muted loop playsInline 
-                                                        preload="none"
+                                                        autoPlay muted loop playsInline 
+                                                        preload="metadata"
                                                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                                     >
                                                         <source src={asset.url} type="video/mp4" />
@@ -290,8 +230,8 @@ export default function Portafolio() {
                 height: '60vh', display: 'flex', alignItems: 'center', 
                 justifyContent: 'center', backgroundColor: '#101214' 
             }}>
-                <div className="text-center">
-                    <p style={{ fontSize: '0.8rem', opacity: 0.5, letterSpacing: '0.3em' }}>{ '{ ELITE MOTION SV - 2026 }' }</p>
+                <div className="text-center" style={{ padding: '0 1rem' }}>
+                    <p style={{ fontSize: 'clamp(0.6rem, 3vw, 0.8rem)', opacity: 0.5, letterSpacing: '0.2em' }}>{ '{ ELITE MOTION SV - 2026 }' }</p>
                 </div>
             </section>
 
@@ -315,11 +255,14 @@ export default function Portafolio() {
                         display: 'flex', alignItems: 'center', justifyContent: 'center'
                     }}>
                         {selectedAsset.type === 'image' ? (
-                            <img 
-                                src={selectedAsset.url} 
-                                alt={selectedAsset.title} 
-                                style={{ maxWidth: '100%', maxHeight: '90vh', objectFit: 'contain', borderRadius: '8px' }}
-                            />
+                            <div style={{ position: 'relative', width: '90vw', height: '90vh' }}>
+                                <Image 
+                                    src={selectedAsset.url} 
+                                    alt={selectedAsset.title} 
+                                    fill
+                                    style={{ objectFit: 'contain' }}
+                                />
+                            </div>
                         ) : (
                             <video 
                                 controls autoPlay loop 

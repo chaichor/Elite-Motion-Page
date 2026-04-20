@@ -327,7 +327,7 @@ export default function HomePageClient() {
             <Link href="/contacto" className="em-btn em-btn-primary">
               Iniciar Proyecto
             </Link>
-            <Link href="/precios" className="em-btn em-btn-outline">
+            <Link href="/portafolio" className="em-btn em-btn-outline">
               Ver Portafolio
             </Link>
             <a href={WA} target="_blank" rel="noopener noreferrer" className="em-btn em-btn-wa">
@@ -469,7 +469,8 @@ export default function HomePageClient() {
                       width: '100%',
                       height: '100%',
                       objectFit: 'cover',
-                      zIndex: 0
+                      zIndex: 0,
+                      transition: 'transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)'
                     }}
                   />
                 ) : (
@@ -484,17 +485,13 @@ export default function HomePageClient() {
                       height: '100%',
                       objectFit: 'cover',
                       zIndex: 0,
-                      transition: 'transform 0.5s ease'
+                      transition: 'transform 0.6s cubic-bezier(0.2, 0.8, 0.3, 1)'
                     }}
                   />
                 )}
 
                 <div className="em-portfolio-overlay" style={{ zIndex: 1 }}>
-                  <div className="em-play-btn">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                      <polygon points="5 3 19 12 5 21 5 3" />
-                    </svg>
-                  </div>
+
                   <div className="em-portfolio-info">
                     <span className="em-portfolio-tag">{item.tag}</span>
                     <p className="em-portfolio-label">{item.label}</p>

@@ -290,12 +290,12 @@ function PricingTable({ plans, color, notes }: TableProps) {
 /* ─── Page ──────────────────────────────────────────────── */
 
 export default function Precios() {
-  const [activeTab, setActiveTab] = useState<'inmobiliario' | 'redes' | 'foto'>('inmobiliario');
+  const [activeTab, setActiveTab] = useState<'inmobiliario' | 'redes' | 'foto'>('foto');
 
   const tabs: { id: 'inmobiliario' | 'redes' | 'foto'; label: string; color: string }[] = [
-    { id: 'inmobiliario', label: 'Paquetes Inmobiliarios', color: '#00e5ff' },
-    { id: 'redes',        label: 'Redes & Contenido',     color: '#a855f7' },
     { id: 'foto',         label: 'Sesiones de Foto',      color: '#ff6b35' },
+    { id: 'redes',        label: 'Redes & Contenido',     color: '#a855f7' },
+    { id: 'inmobiliario', label: 'Paquetes Inmobiliarios', color: '#00e5ff' },
   ];
 
   const activeColor = tabs.find(t => t.id === activeTab)?.color ?? '#00e5ff';
