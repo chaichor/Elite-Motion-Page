@@ -38,7 +38,7 @@ const inmobiliariosPlans = [
       'Dron incluido en video': true,
       'Edición': 'Intermedia',
       'Correcciones incluidas': '1',
-      'Motion graphics y animaciones': false,
+      'Motion graphics y animaciones': true,
       'Efectos 3D': false,
       'Dron FPV (recorrido interior)': false,
       'Estrategia de contenido + guión': true,

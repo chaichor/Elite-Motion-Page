@@ -520,7 +520,391 @@ export default function HomePageClient() {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════ CTA FINAL */}
+      {/* ═══════════════════════════════════════════ COBERTURA 3D */}
+      <section className="em-coverage-section">
+        <div className="container em-coverage-grid">
+          <div className="em-coverage-content">
+            <span className="em-badge" style={{ display: 'inline-block', padding: '0.35rem 1rem', background: 'rgba(0, 229, 255, 0.1)', color: '#00e5ff', borderRadius: '100px', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', border: '1px solid rgba(0, 229, 255, 0.25)' }}>
+              Área de Cobertura
+            </span>
+            <h2 className="em-section-title" style={{ margin: '20px 0', textAlign: 'left', fontSize: 'clamp(1.8rem, 3.5vw, 2.5rem)' }}>
+              Llegamos a <span className="em-gradient-text">todo El Salvador</span>
+            </h2>
+            <p className="em-section-sub" style={{ marginBottom: '40px', maxWidth: '85%', textAlign: 'left', fontSize: '0.95rem' }}>
+              Nuestra base operativa se encuentra en <strong>San Salvador</strong>, donde ofrecemos cobertura total sin cargos adicionales.
+            </p>
+            
+            <div className="em-coverage-features">
+              <div className="em-coverage-item">
+                <div className="em-coverage-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="em-feature-title">San Salvador (Zona Central)</h3>
+                  <p className="em-feature-p">Cobertura estándar incluida en todos los paquetes prioritarios.</p>
+                </div>
+              </div>
+              <div className="em-coverage-item">
+                <div className="em-coverage-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00e5ff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="1" y="3" width="15" height="13" />
+                    <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+                    <circle cx="5.5" cy="18.5" r="2.5" />
+                    <circle cx="18.5" cy="18.5" r="2.5" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="em-feature-title">Resto de Departamentos</h3>
+                  <p className="em-feature-p">Disponibilidad nacional con logística optimizada según tu ubicación.</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="em-coverage-cta">
+              <p>Proyectos fuera de la capital llevan un cargo adicional por transporte. <br/><strong>Contáctanos para una cotización exacta.</strong></p>
+            </div>
+          </div>
+
+          <div className="em-map-container">
+            <div className="em-map-3d-wrapper">
+              <div className="em-map-base">
+                <svg viewBox="50 0 830 510" className="em-svg-map">
+                  <defs>
+                    <radialGradient id="hubGlow" cx="50%" cy="50%" r="50%">
+                      <stop offset="0%" stopColor="#00e5ff" stopOpacity="0.5" />
+                      <stop offset="100%" stopColor="#00e5ff" stopOpacity="0" />
+                    </radialGradient>
+                    <filter id="boxGlow">
+                      <feGaussianBlur stdDeviation="2" result="blur" />
+                      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                    </filter>
+                  </defs>
+
+                  {/* High Accuracy Dotted Map from /public/dotted_elsalvador.svg */}
+                  <image 
+                    href="/dotted_elsalvador.svg" 
+                    width="824.76" 
+                    height="508.41" 
+                    x="51.95" 
+                    y="21.33"
+                    className="em-map-image-filtered"
+                  />
+
+                  {/* San Salvador Hub */}
+                  <circle cx="385" cy="260" r="45" fill="url(#hubGlow)" className="em-map-hub-glow" />
+                  
+                  <g className="em-ss-marker">
+                    <circle cx="385" cy="260" r="4" fill="#00e5ff" filter="url(#boxGlow)" />
+                    <circle cx="385" cy="260" r="10" fill="none" stroke="#00e5ff" strokeWidth="1" opacity="0.6">
+                      <animate attributeName="r" from="4" to="30" dur="3s" repeatCount="indefinite" />
+                      <animate attributeName="opacity" from="0.6" to="0" dur="3s" repeatCount="indefinite" />
+                    </circle>
+                  </g>
+
+                  {/* HUD Markers */}
+                  <foreignObject x="340" y="190" width="300" height="150" overflow="visible">
+                    <div className="em-hud-label active" style={{ width: 'max-content' }}>
+                       <div className="hud-dot"></div>
+                       <div className="hud-text">
+                         <span className="hud-title">San Salvador</span>
+                         <span className="hud-status">ZONA CENTRAL</span>
+                       </div>
+                    </div>
+                  </foreignObject>
+
+                  <foreignObject x="540" y="280" width="300" height="150" overflow="visible">
+                    <div className="em-hud-label" style={{ width: 'max-content' }}>
+                       <div className="hud-dot dim"></div>
+                       <div className="hud-text">
+                         <span className="hud-title">Nacional</span>
+                         <span className="hud-status">RESTO DEL PAÍS</span>
+                       </div>
+                    </div>
+                  </foreignObject>
+                </svg>
+              </div>
+            </div>
+            <div className="em-map-reflection"></div>
+          </div>
+        </div>
+
+        <style jsx>{`
+          .em-coverage-section {
+            padding: 120px 0;
+            background: #020202;
+            position: relative;
+            overflow: hidden;
+          }
+
+          .em-coverage-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 1.3fr;
+            gap: 60px;
+            align-items: center;
+          }
+
+          .em-feature-title {
+            font-size: 1rem;
+            margin-bottom: 4px;
+            color: #fff;
+            font-weight: 700;
+          }
+
+          .em-feature-p {
+             font-size: 0.88rem;
+             color: rgba(255, 255, 255, 0.45);
+             line-height: 1.5;
+          }
+
+          .em-coverage-features {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+          }
+
+          .em-coverage-item {
+            display: flex;
+            gap: 16px;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 20px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+          }
+
+          .em-coverage-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(0, 229, 255, 0.2);
+            transform: translateX(8px);
+          }
+
+          .em-coverage-icon {
+            background: rgba(0, 229, 255, 0.05);
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            flex-shrink: 0;
+            border: 1px solid rgba(0, 229, 255, 0.1);
+          }
+
+          .em-coverage-cta {
+             margin-top: 32px;
+             font-size: 0.9rem;
+             color: rgba(255, 255, 255, 0.5);
+             padding: 20px;
+             border-radius: 4px;
+             border: 1px solid rgba(255, 255, 255, 0.03);
+             background: linear-gradient(to right, rgba(255,255,255,0.01), transparent);
+          }
+
+          .em-coverage-cta strong {
+             color: #00e5ff;
+          }
+
+          .em-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: rgba(0, 229, 255, 0.08);
+            color: #00e5ff;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            border-left: 3px solid #00e5ff;
+          }
+
+          .em-section-sub {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.25rem;
+            margin-bottom: 48px;
+            line-height: 1.5;
+            max-width: 90%;
+          }
+
+          .em-coverage-features {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+          }
+
+          .em-coverage-item {
+            display: flex;
+            gap: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+          }
+
+          .em-coverage-item:hover {
+            background: rgba(0, 229, 255, 0.04);
+            border-color: rgba(0, 229, 255, 0.3);
+            transform: translateY(-5px);
+          }
+
+          .em-coverage-icon {
+            font-size: 2rem;
+            background: rgba(0, 229, 255, 0.1);
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            flex-shrink: 0;
+          }
+
+          .em-coverage-item h3 {
+             font-size: 1.3rem;
+             margin-bottom: 6px;
+             color: #fff;
+             font-weight: 700;
+          }
+
+          .em-coverage-item p {
+             font-size: 1rem;
+             color: rgba(255, 255, 255, 0.5);
+             line-height: 1.4;
+          }
+
+          /* 3D MAP STYLES */
+          .em-map-container {
+            position: relative;
+            height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 2500px;
+          }
+
+          .em-map-3d-wrapper {
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transform: rotateX(22deg) rotateZ(-12deg) translateY(-40px);
+            transition: transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+          }
+
+          .em-map-container:hover .em-map-3d-wrapper {
+            transform: rotateX(15deg) rotateZ(-8deg) translateY(-10px);
+          }
+
+          .em-svg-map {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+          }
+
+          .em-hud-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            padding: 10px 16px;
+            border-radius: 4px;
+            border-left: 2px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            /* Counter-rotate for readability at current map angle */
+            transform: rotateZ(12deg) rotateX(-22deg) scale(1.1);
+            transition: all 0.8s ease;
+            white-space: nowrap;
+          }
+
+          .em-map-container:hover .em-hud-label {
+            transform: rotateZ(8deg) rotateX(-15deg) scale(1.2);
+          }
+
+          .em-hud-label.active {
+            border-left-color: #00e5ff;
+          }
+
+          .hud-dot {
+            width: 8px;
+            height: 8px;
+            background: #00e5ff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00e5ff;
+          }
+
+          .hud-dot.dim {
+            background: #666;
+            box-shadow: none;
+          }
+
+          .hud-text {
+            display: flex;
+            flex-direction: column;
+          }
+
+          .hud-title {
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+          }
+
+          .hud-status {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 500;
+          }
+
+          .em-map-hub-glow {
+            animation: hubPulse 3.5s infinite ease-in-out;
+          }
+
+          .em-map-reflection {
+            position: absolute;
+            bottom: 8%;
+            width: 160%;
+            height: 45%;
+            background: 
+              radial-gradient(ellipse at center, rgba(168, 85, 247, 0.12) 0%, transparent 60%),
+              radial-gradient(ellipse at center, rgba(0, 229, 255, 0.18) 10%, transparent 50%);
+            transform: rotateX(75deg);
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(50px);
+            opacity: 0.85;
+          }
+
+          @keyframes hubPulse {
+            0%, 100% { opacity: 0.4; transform: scale(0.9); }
+            50% { opacity: 0.7; transform: scale(1.15); }
+          }
+
+          @media (max-width: 968px) {
+            .em-coverage-grid {
+              grid-template-columns: 1fr;
+              gap: 30px;
+            }
+            .em-map-container {
+               height: 400px;
+               order: -1;
+               margin-bottom: 40px;
+            }
+            .em-hud-label {
+               transform: rotateZ(12deg) rotateX(-55deg) scale(0.85);
+            }
+            .em-section-title {
+               font-size: 2.8rem;
+            }
+          }
+        `}</style>
+      </section>
+
+
+
       <section className="em-cta-section">
         <div ref={ctaFinalRef} className="container em-cta-inner" style={{ opacity: isMobile ? 1 : 0 }}>
           <span className="em-badge">¿Listo para Crecer?</span>
