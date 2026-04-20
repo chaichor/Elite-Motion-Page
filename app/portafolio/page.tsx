@@ -245,7 +245,7 @@ export default function Portafolio() {
                 }}>
                     <button onClick={closeLightbox} style={{ 
                         position: 'absolute', top: '2rem', right: '2rem', 
-                        background: 'none', border: 'none', color: 'white', cursor: 'pointer' 
+                        background: 'none', border: 'none', color: 'white', cursor: 'pointer', zIndex: 1010
                     }}>
                         <X size={40} />
                     </button>
