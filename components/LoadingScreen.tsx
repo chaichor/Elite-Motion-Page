@@ -10,8 +10,20 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
     const [progress, setProgress] = useState(0);
     const [isExiting, setIsExiting] = useState(false);
 
+    const [particles, setParticles] = useState<any[]>([]);
+
     useEffect(() => {
-        // Animate from 0 to 100 over ~2 seconds
+        // Generate random particles only once on the client
+        const newParticles = [...Array(20)].map((_, i) => ({
+            id: i,
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            duration: 3 + Math.random() * 4,
+            delay: Math.random() * 2,
+            drift: Math.random() > 0.5 ? '' : '-'
+        }));
+        setParticles(newParticles);
+
         const duration = 2000;
         const interval = 20;
         const increment = 100 / (duration / interval);
@@ -21,7 +33,6 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
                 const next = prev + increment;
                 if (next >= 100) {
                     clearInterval(timer);
-                    // Start exit animation
                     setTimeout(() => {
                         setIsExiting(true);
                         setTimeout(onComplete, 800);
@@ -59,19 +70,19 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
                 overflow: 'hidden',
                 opacity: 0.3,
             }}>
-                {[...Array(20)].map((_, i) => (
+                {particles.map((p) => (
                     <div
-                        key={i}
+                        key={p.id}
                         style={{
                             position: 'absolute',
-                            left: `${Math.random() * 100}%`,
-                            top: `${Math.random() * 100}%`,
+                            left: p.left,
+                            top: p.top,
                             width: '2px',
                             height: '2px',
                             background: '#00e5ff',
                             borderRadius: '50%',
-                            animation: `floatParticle ${3 + Math.random() * 4}s ease-in-out infinite`,
-                            animationDelay: `${Math.random() * 2}s`,
+                            animation: `floatParticle ${p.duration}s ease-in-out infinite`,
+                            animationDelay: `${p.delay}s`,
                         }}
                     />
                 ))}
@@ -160,7 +171,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
             opacity: 0.3;
           }
           50% {
-            transform: translate(${Math.random() > 0.5 ? '' : '-'}30px, -50px);
+            transform: translate(30px, -50px);
             opacity: 0.8;
           }
         }

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   },
 
   description:
-    "Elite Motion ofrece producción audiovisual profesional en El Salvador: videos comerciales, grabación con drones DJI, FPV cinematográfico, contenido para Airbnb, hoteles, inmobiliarias, restaurantes y marcas.",
+    "Producción audiovisual y fotografía profesional en El Salvador. Especialistas en creación de contenido para redes sociales, videos para Airbnb y bienes raíces, y fotografía de marca de alto impacto. Elevamos tu presencia visual.",
 
   keywords: [
     // Marca
@@ -18,35 +18,27 @@ export const metadata: Metadata = {
     "Elite Motion El Salvador",
 
     // Servicios principales
+    "fotografía profesional el salvador",
     "video comercial",
     "producción audiovisual",
     "marketing visual",
-    "contenido para redes sociales",
-    "videos promocionales",
-    "videos corporativos",
+    "creación de contenido redes sociales",
+    "videos para tiktok el salvador",
+    "sesiones de fotos el salvador",
 
-    // Drones y tecnología
-    "drones DJI",
-    "drone fpv",
-    "fpv cinematográfico",
-    "grabación aérea",
-    "video aéreo profesional",
-    "fotografía aérea",
-
-    // Nichos
+    // Nichos y Paquetes
     "airbnb el salvador",
-    "hoteles el salvador",
     "bienes raíces el salvador",
     "inmobiliaria el salvador",
-    "construcción el salvador",
     "restaurantes el salvador",
-    "eventos el salvador",
+    "marketing inmobiliario",
+    "contenido para emprendedores",
 
-    // Local SEO
-    "video el salvador",
+    // Marca y tecnología
+    "Elite Motion SV",
+    "Elite Motion El Salvador",
     "drones el salvador",
-    "marketing digital el salvador",
-    "productora audiovisual el salvador",
+    "video aéreo profesional",
   ],
 
   authors: [{ name: "Elite Motion" }],
@@ -70,11 +62,11 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "es_SV",
-    url: "https://www.elitemotion.com", // cambia si aún no tienes dominio
+    url: "https://elitemotionsv.com",
     siteName: "Elite Motion",
-    title: "Elite Motion",
+    title: "Elite Motion | Producción Audiovisual y Fotografía",
     description:
-      "Producción audiovisual premium con drones DJI y FPV. Creamos videos impactantes para Airbnb, hoteles, inmobiliarias, restaurantes y marcas en El Salvador.",
+      "Transformamos tu marca con fotografía profesional, creación de contenido para redes sociales y video marketing especializado en El Salvador. Especialistas en Airbnb e Inmobiliaria.",
     images: [
       {
         url: "/og-image.jpg", // imagen 1200x630 recomendada
@@ -86,9 +78,9 @@ export const metadata: Metadata = {
   },
 
   icons: {
-    icon: "/logo.png",
-    shortcut: "/logo.png",
-    apple: "/logo.png",
+    icon: "/logo_white.svg",
+    shortcut: "/logo_white.svg",
+    apple: "/logo_white.svg",
   },
 };
 
