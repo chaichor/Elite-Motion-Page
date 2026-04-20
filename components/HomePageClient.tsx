@@ -889,9 +889,7 @@ export default function HomePageClient() {
               gap: 30px;
             }
             .em-map-container {
-               height: 400px;
-               order: -1;
-               margin-bottom: 40px;
+               display: none;
             }
             .em-hud-label {
                transform: rotateZ(12deg) rotateX(-55deg) scale(0.85);
