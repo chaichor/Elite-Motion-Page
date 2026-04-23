@@ -176,7 +176,7 @@ const quoteServices = [
       </svg>
     ),
     title: 'Cobertura de Eventos',
-    reason: 'La duración, el número de camarógrafos requeridos, el tipo de evento y los entregables varían enormemente. Un evento de 2 horas no es igual a uno de 8 horas con transmisión en vivo.',
+    reason: 'La duración, el número de camarógrafos requeridos, el tipo de evento y los entregables varían enormemente. Un evento de 2 horas no es igual a uno de 8 horas con requerimientos especiales.',
   },
   {
     icon: (

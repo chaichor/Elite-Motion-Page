@@ -3,6 +3,7 @@ import Script from "next/script";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SecurityProvider from "@/components/SecurityProvider";
 
 export const metadata: Metadata = {
   title: {
@@ -125,22 +126,24 @@ export default function RootLayout({
         {/* Background gradient effect */}
         <div className="bg-gradient" />
 
-        {/* Global Navbar */}
-        <Navbar />
+        <SecurityProvider>
+          {/* Global Navbar */}
+          <Navbar />
 
-        {/* Page content */}
-        <main
-          style={{
-            minHeight: "100vh",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          {children}
-        </main>
+          {/* Page content */}
+          <main
+            style={{
+              minHeight: "100vh",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            {children}
+          </main>
 
-        {/* Global Footer */}
-        <Footer />
+          {/* Global Footer */}
+          <Footer />
+        </SecurityProvider>
       </body>
     </html>
   );

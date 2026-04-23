@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, FormEvent } from 'react';
-import Link from 'next/link';
 
 const WA = 'https://wa.me/50377350934';
 
@@ -84,13 +83,13 @@ const contactInfo = [
 
 /* ─── Input field helper ──────────────────────────────── */
 function Field({
-  label, id, required = false,
+  label, id, required = false, error,
   children,
 }: {
-  label: string; id: string; required?: boolean; children: React.ReactNode;
+  label: string; id: string; required?: boolean; error?: string; children: React.ReactNode;
 }) {
   return (
-    <div>
+    <div style={{ position: 'relative' }}>
       <label htmlFor={id} style={{
         display: 'block',
         fontFamily: "'Outfit', sans-serif",
@@ -104,6 +103,19 @@ function Field({
         {label}{required && <span style={{ color: '#00e5ff', marginLeft: '3px' }}>*</span>}
       </label>
       {children}
+      {error && (
+        <span style={{
+          position: 'absolute',
+          bottom: '-1.2rem',
+          left: '0',
+          fontSize: '0.65rem',
+          color: '#ef4444',
+          fontFamily: "'Outfit', sans-serif",
+          fontWeight: 500
+        }}>
+          {error}
+        </span>
+      )}
     </div>
   );
 }
@@ -127,33 +139,72 @@ export default function Contacto() {
   const [form, setForm] = useState({
     nombre: '', email: '', telefono: '',
     servicio: '', presupuesto: '', descripcion: '',
+    bot_check: '', // Honeypot field
   });
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const set = (field: keyof typeof form) =>
-    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
       setForm(prev => ({ ...prev, [field]: e.target.value }));
+      // Clear error when user types
+      if (errors[field]) {
+        setErrors(prev => {
+          const newErrors = { ...prev };
+          delete newErrors[field];
+          return newErrors;
+        });
+      }
+    };
+
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+    if (!form.nombre.trim()) newErrors.nombre = 'El nombre es obligatorio';
+    if (!form.email.trim()) {
+      newErrors.email = 'El correo es obligatorio';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      newErrors.email = 'Correo electrónico no válido';
+    }
+    if (!form.servicio) newErrors.servicio = 'Selecciona un servicio';
+    if (!form.descripcion.trim()) newErrors.descripcion = 'Cuéntanos un poco sobre tu proyecto';
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    if (!validate()) {
+      setErrorMsg('Por favor completa todos los campos requeridos.');
+      setStatus('error');
+      return;
+    }
+
+    // Bot check (Honeypot)
+    if (form.bot_check) {
+      console.warn("Bot detected");
+      setStatus('sent'); // Pretend it was sent to fool the bot
+      return;
+    }
+
     setStatus('sending');
     setErrorMsg('');
 
     try {
-      // Usamos FormData como recomienda Web3Forms para máxima compatibilidad
       const formData = new FormData();
       formData.append("access_key", "8fc63f3d-b7d8-4731-82fc-de52c00848f1");
       formData.append("subject", `Nueva Cotización: ${form.servicio} — ${form.nombre}`);
       formData.append("from_name", "Elite Motion Website");
-      
-      // Agregamos todos los campos del formulario
-      Object.entries(form).forEach(([key, value]) => {
+
+      // Exclude bot_check from actual submission
+      const { bot_check, ...submitData } = form;
+      Object.entries(submitData).forEach(([key, value]) => {
         formData.append(key, value);
       });
 
-      // Campo 'message' consolidado para asegurar la recepción
-      formData.append("message", `Cliente: ${form.nombre}\nServicio: ${form.servicio}\nPresupuesto: ${form.presupuesto}\nDescripción: ${form.descripcion}`);
+      formData.append("message", `Cliente: ${form.nombre}\nEmail: ${form.email}\nTel: ${form.telefono}\nServicio: ${form.servicio}\nPresupuesto: ${form.presupuesto}\nDescripción: ${form.descripcion}`);
 
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
@@ -164,7 +215,7 @@ export default function Contacto() {
 
       if (data.success) {
         setStatus('sent');
-        setForm({ nombre: '', email: '', telefono: '', servicio: '', presupuesto: '', descripcion: '' });
+        setForm({ nombre: '', email: '', telefono: '', servicio: '', presupuesto: '', descripcion: '', bot_check: '' });
       } else {
         setStatus('error');
         setErrorMsg(data.message || 'Error al enviar el formulario.');
@@ -320,24 +371,36 @@ export default function Contacto() {
 
                     <div className="form-grid">
 
+                      {/* Honeypot field - Hidden from users */}
+                      <div style={{ display: 'none' }}>
+                        <input
+                          type="text"
+                          name="bot_check"
+                          value={form.bot_check}
+                          onChange={set('bot_check')}
+                          tabIndex={-1}
+                          autoComplete="off"
+                        />
+                      </div>
+
                       {/* Nombre */}
-                      <Field label="Nombre completo" id="nombre" required>
+                      <Field label="Nombre completo" id="nombre" required error={errors.nombre}>
                         <input
                           id="nombre" type="text" required
                           value={form.nombre} onChange={set('nombre')}
                           placeholder="Tu nombre completo"
-                          style={inputStyle}
+                          style={{ ...inputStyle, borderColor: errors.nombre ? 'rgba(239,68,68,0.4)' : inputStyle.borderColor }}
                           onFocus={focusStyle} onBlur={blurStyle}
                         />
                       </Field>
 
                       {/* Email */}
-                      <Field label="Correo electrónico" id="email" required>
+                      <Field label="Correo electrónico" id="email" required error={errors.email}>
                         <input
                           id="email" type="email" required
                           value={form.email} onChange={set('email')}
                           placeholder="tu@correo.com"
-                          style={inputStyle}
+                          style={{ ...inputStyle, borderColor: errors.email ? 'rgba(239,68,68,0.4)' : inputStyle.borderColor }}
                           onFocus={focusStyle} onBlur={blurStyle}
                         />
                       </Field>
@@ -354,11 +417,19 @@ export default function Contacto() {
                       </Field>
 
                       {/* Servicio */}
-                      <Field label="Servicio de interés" id="servicio" required>
+                      <Field label="Servicio de interés" id="servicio" required error={errors.servicio}>
                         <select
                           id="servicio" required
                           value={form.servicio} onChange={set('servicio')}
-                          style={{ ...inputStyle, appearance: 'none', cursor: 'pointer', backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='rgba(255,255,255,0.4)' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center' }}
+                          style={{
+                            ...inputStyle,
+                            borderColor: errors.servicio ? 'rgba(239,68,68,0.4)' : inputStyle.borderColor,
+                            appearance: 'none',
+                            cursor: 'pointer',
+                            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='rgba(255,255,255,0.4)' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E")`,
+                            backgroundRepeat: 'no-repeat',
+                            backgroundPosition: 'right 1rem center'
+                          }}
                           onFocus={focusStyle} onBlur={blurStyle}
                         >
                           {servicios.map(s => (
@@ -385,21 +456,26 @@ export default function Contacto() {
 
                     {/* Descripción */}
                     <div style={{ marginTop: '1.25rem' }}>
-                      <Field label="Describe tu proyecto" id="descripcion" required>
+                      <Field label="Describe tu proyecto" id="descripcion" required error={errors.descripcion}>
                         <textarea
                           id="descripcion" required rows={5}
                           value={form.descripcion} onChange={set('descripcion')}
                           placeholder="Cuéntanos sobre tu proyecto: ¿qué necesitas, dónde, cuándo? Mientras más detalles, mejor propuesta podemos hacerte."
-                          style={{ ...inputStyle, resize: 'none', lineHeight: 1.6 }}
+                          style={{
+                            ...inputStyle,
+                            borderColor: errors.descripcion ? 'rgba(239,68,68,0.4)' : inputStyle.borderColor,
+                            resize: 'none',
+                            lineHeight: 1.6
+                          }}
                           onFocus={focusStyle} onBlur={blurStyle}
                         />
                       </Field>
                     </div>
 
                     {/* Error */}
-                    {status === 'error' && (
+                    {status === 'error' && !Object.keys(errors).length && (
                       <div style={{
-                        marginTop: '1rem', padding: '0.875rem 1rem',
+                        marginTop: '1.5rem', padding: '0.875rem 1rem',
                         background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)',
                         borderRadius: '10px', color: '#fca5a5',
                         fontFamily: "'Outfit',sans-serif", fontSize: '0.88rem'
