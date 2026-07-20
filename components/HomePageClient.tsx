@@ -152,9 +152,10 @@ const whyUs = [
 ];
 
 const portfolio = [
-  { id: 2, type: 'image', url: '/img_portafolio/yaxhe_1.webp', label: 'Sesión de Producto', tag: 'Comercial', accent: 'linear-gradient(135deg,#1a0a0a 0%,#ff6b3522 100%)' },
-  { id: 1, type: 'video', url: '/videos_vertical_portafolio/yaxhe_emprendimiento_sombreros_personalizados.mp4', label: 'Sombreros Personalizados', tag: 'Comercial', accent: 'linear-gradient(135deg,#0a1628 0%,#00e5ff22 100%)' },
-  { id: 3, type: 'image', url: '/img_portafolio/Post 07.webp', label: 'Sesión Fotográfica', tag: 'Fotografía', accent: 'linear-gradient(135deg,#0d0a1a 0%,#a855f722 100%)' },
+  { id: 1, type: 'image', url: '/img_portafolio/yaxhe 5 (1).webp', label: 'Sesión de Producto', tag: 'Comercial', accent: 'linear-gradient(135deg,#1a0a0a 0%,#ff6b3522 100%)' },
+  { id: 2, type: 'image', url: '/artes_y_historias/post/POST%20%234.jpg', label: 'Taquería Jalisco — Post', tag: 'Artes', accent: 'linear-gradient(135deg,#0a1a11 0%,#10b98122 100%)' },
+  { id: 3, type: 'image', url: '/artes_y_historias/historias/HISTORIA%20%233.jpg', label: 'Taquería Jalisco — Historia', tag: 'Historias', accent: 'linear-gradient(135deg,#0a1610 0%,#10b98122 100%)' },
+  { id: 4, type: 'image', url: '/img_portafolio/Post 07.webp', label: 'Sesión Fotográfica', tag: 'Fotografía', accent: 'linear-gradient(135deg,#0d0a1a 0%,#a855f722 100%)' },
 ];
 
 /* ─── WhatsApp number ──────────────────────────────────────────── */
