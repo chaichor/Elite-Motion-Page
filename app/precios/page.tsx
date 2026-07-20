@@ -13,6 +13,7 @@ const inmobiliariosPlans = [
     name: 'Básico',
     price: 180,
     badge: null,
+    oldPrice: null,
     features: {
       'Fotografías profesionales': '6 fotos',
       'Fotos aéreas con dron': '2 fotos',
@@ -30,7 +31,8 @@ const inmobiliariosPlans = [
     id: 'pro',
     name: 'Pro',
     price: 300,
-    badge: 'Más Popular',
+    badge: 'Buena opción',
+    oldPrice: null,
     features: {
       'Fotografías profesionales': '12 fotos',
       'Fotos aéreas con dron': '4 fotos',
@@ -48,7 +50,8 @@ const inmobiliariosPlans = [
     id: 'elite',
     name: 'Elite',
     price: 500,
-    badge: null,
+    badge: 'Más pedido',
+    oldPrice: 600,
     features: {
       'Fotografías profesionales': '16 fotos',
       'Fotos aéreas con dron': '8 fotos',
@@ -70,59 +73,65 @@ const redesPlans = [
     name: 'Inicial',
     price: 150,
     badge: null,
+    oldPrice: null,
     features: {
       'Grabación': 'Profesional HD',
       'Videos cortos para redes': '3 videos',
-      'Fotos para redes': '8 fotos (solo local)',
+      'Sesión fotográfica': '(solo local)',
       'Historias': '4 historias',
       'Carruseles': '2 carruseles',
       'Copys para videos': true,
       'Calendarización recomendada': true,
-      'Grabación con dron FPV/estabilizado': false,
+      'Grabación con dron': false,
       'Edición': 'Básica',
       'Correcciones': '1 sencilla',
       'Estrategia de contenido + guión': true,
       'Entrega lista para publicar': true,
+      'Manejo de cuentas (Facebook, Instagram, TikTok)': false,
     },
   },
   {
     id: 'pro-redes',
     name: 'Pro',
-    price: 290,
-    badge: 'Más Solicitado',
+    price: 300,
+    badge: 'Buena opción',
+    oldPrice: null,
     features: {
       'Grabación': 'Profesional HD',
       'Videos cortos para redes': '6 videos',
-      'Fotos para redes': '12 fotos (incl. producto)',
+      'Sesión fotográfica': '(incl. producto)',
       'Historias': '6 historias',
-      'Carruseles': '4 carruseles',
+      'Carruseles': '6 carruseles',
       'Copys para videos': true,
       'Calendarización recomendada': true,
-      'Grabación con dron FPV/estabilizado': false,
+      'Grabación con dron': true,
       'Edición': 'Personalizada',
       'Correcciones': '2',
       'Estrategia de contenido + guión': true,
       'Entrega lista para publicar': true,
+      'Manejo de cuentas (Facebook, Instagram, TikTok)': false,
     },
   },
   {
     id: 'elite-redes',
     name: 'Elite',
-    price: 400,
-    badge: null,
+    price: 450,
+    badge: 'Más pedido',
+    oldPrice: 500,
     features: {
       'Grabación': 'Profesional HD',
       'Videos cortos para redes': '10 videos',
-      'Fotos para redes': '20 fotos (incl. producto)',
+      'Sesión fotográfica': '(incl. producto)',
       'Historias': '12 historias',
       'Carruseles': '8 carruseles',
       'Copys para videos': true,
       'Calendarización recomendada': true,
-      'Grabación con dron FPV/estabilizado': true,
+      'Grabación con dron': true,
       'Edición': 'Avanzada Premium',
       'Correcciones': '3',
       'Estrategia de contenido + guión': true,
       'Entrega lista para publicar': true,
+      'Manejo de cuentas (Facebook, Instagram, TikTok)': 'Gratis',
     },
   },
 ];
@@ -133,6 +142,7 @@ const fotoPlans = [
     name: 'Básico',
     price: 60,
     badge: null,
+    oldPrice: null,
     features: {
       'Fotografías profesionales': '16 fotos',
       'Duración de sesión': '60 minutos',
@@ -143,7 +153,8 @@ const fotoPlans = [
     id: 'foto-pro',
     name: 'Pro',
     price: 80,
-    badge: 'Más Popular',
+    badge: 'Buena opción',
+    oldPrice: null,
     features: {
       'Fotografías profesionales': '25 fotos',
       'Duración de sesión': '1 hora 30 min',
@@ -154,7 +165,8 @@ const fotoPlans = [
     id: 'foto-elite',
     name: 'Elite',
     price: 120,
-    badge: null,
+    badge: 'Más pedido',
+    oldPrice: 150,
     features: {
       'Fotografías profesionales': '35 fotos',
       'Duración de sesión': '2 horas',
@@ -204,6 +216,7 @@ type Plan = {
   name: string;
   price: number;
   badge: string | null;
+  oldPrice?: number | null;
   features: Record<string, string | boolean>;
 };
 
@@ -215,7 +228,7 @@ type TableProps = {
 
 function PricingTable({ plans, color, notes }: TableProps) {
   const featureKeys = Object.keys(plans[0].features);
-  const popularIdx = plans.findIndex(p => p.badge);
+  // Elite badge = 'Más pedido' (gold treatment), Pro badge = 'Buena opción' (neutral)
 
   return (
     <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
@@ -223,33 +236,56 @@ function PricingTable({ plans, color, notes }: TableProps) {
         <thead>
           <tr>
             <th className="price-table-feature-col">Característica</th>
-            {plans.map((plan, i) => (
-              <th
-                key={plan.id}
-                className={`price-table-plan-col${i === popularIdx ? ' plan-highlight' : ''}`}
-                style={i === popularIdx ? { '--plan-color': color } as React.CSSProperties : {}}
-              >
-                {plan.badge && (
-                  <span className="plan-badge" style={{ background: color, color: '#050505' }}>
-                    {plan.badge}
-                  </span>
-                )}
-                <div className="plan-name">{plan.name}</div>
-                <div className="plan-price" style={i === popularIdx ? { color } : {}}>
-                  <span className="plan-currency">$</span>
-                  {plan.price}
-                </div>
-                <Link href={WA} target="_blank" rel="noopener noreferrer"
-                  className="plan-cta-btn"
-                  style={i === popularIdx
-                    ? { background: color, color: '#050505' }
-                    : { border: `1px solid rgba(255,255,255,0.15)`, color: '#fafafa' }
-                  }
+            {plans.map((plan, i) => {
+              const isElite = plan.badge === 'Más pedido';
+              const isPro   = plan.badge === 'Buena opción';
+              return (
+                <th
+                  key={plan.id}
+                  className="price-table-plan-col"
                 >
-                  Contratar
-                </Link>
-              </th>
-            ))}
+                  {/* Elite — gold badge */}
+                  {isElite && plan.badge && (
+                    <span className="plan-badge-gold">
+                      ✦ {plan.badge}
+                    </span>
+                  )}
+                  {/* Pro — neutral badge */}
+                  {isPro && plan.badge && (
+                    <span className="plan-badge-neutral">
+                      {plan.badge}
+                    </span>
+                  )}
+
+                  <div className="plan-name">{plan.name}</div>
+
+                  {/* Price with optional strikethrough */}
+                  <div className="plan-price" style={isElite ? { color: '#f59e0b' } : {}}>
+                    {plan.oldPrice && (
+                      <div className="plan-old-price">${plan.oldPrice}</div>
+                    )}
+                    <span className="plan-currency">$</span>
+                    {plan.price}
+                  </div>
+
+                  {/* Elite — standout button */}
+                  {isElite ? (
+                    <Link href={WA} target="_blank" rel="noopener noreferrer"
+                      className="plan-cta-btn plan-cta-elite"
+                    >
+                      ¡Lo quiero!
+                    </Link>
+                  ) : (
+                    <Link href={WA} target="_blank" rel="noopener noreferrer"
+                      className="plan-cta-btn"
+                      style={{ border: `1px solid rgba(255,255,255,0.15)`, color: '#fafafa' }}
+                    >
+                      Contratar
+                    </Link>
+                  )}
+                </th>
+              );
+            })}
           </tr>
         </thead>
         <tbody>
@@ -257,15 +293,15 @@ function PricingTable({ plans, color, notes }: TableProps) {
             <tr key={key} className="price-table-row">
               <td className="price-table-feature-label">{key}</td>
               {plans.map((plan, i) => {
+                const isElite = plan.badge === 'Más pedido';
                 const val = plan.features[key];
                 return (
                   <td
                     key={plan.id}
-                    className={`price-table-value${i === popularIdx ? ' plan-highlight-cell' : ''}`}
-                    style={i === popularIdx ? { '--plan-color': color } as React.CSSProperties : {}}
+                    className="price-table-value"
                   >
                     {val === true ? (
-                      <span className="check-icon" style={{ color }}>
+                      <span className="check-icon" style={{ color: isElite ? '#f59e0b' : color }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
                       </span>
                     ) : val === false ? (
@@ -273,7 +309,7 @@ function PricingTable({ plans, color, notes }: TableProps) {
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
                       </span>
                     ) : (
-                      <span className="value-text">{val as string}</span>
+                      <span className={`value-text${val === 'Gratis' ? ' value-gratis' : ''}`}>{val as string}</span>
                     )}
                   </td>
                 );
@@ -380,9 +416,10 @@ export default function Precios() {
                   color="#a855f7"
                   notes={[
                     'El precio se puede ver modificado dependiendo del lugar de grabación.',
-                    'El uso del dron FPV y estabilizado depende de los permisos de la zona y espacio.',
+                    'El uso del dron depende de los permisos de la zona y espacio disponible.',
                     'Si se requieren modelos se aplicará un cargo extra.',
                     'El uso de IA para transiciones o animaciones aplica con cargo extra.',
+                    'El manejo de cuentas gratuito en el paquete Elite aplica para Facebook, Instagram y TikTok.',
                   ]}
                 />
               </>
@@ -626,6 +663,70 @@ export default function Precios() {
         .plan-cta-btn:hover {
           opacity: 0.85;
           transform: translateY(-1px);
+        }
+
+        /* Elite standout button */
+        .plan-cta-elite {
+          background: linear-gradient(135deg, #f59e0b 0%, #d97706 60%, #b45309 100%) !important;
+          color: #0a0a0a !important;
+          border: none !important;
+          box-shadow: 0 0 18px rgba(245,158,11,0.55), 0 4px 14px rgba(0,0,0,0.4);
+          font-weight: 800;
+          letter-spacing: 0.08em;
+          font-size: 0.82rem;
+        }
+        .plan-cta-elite:hover {
+          opacity: 1 !important;
+          transform: translateY(-2px) scale(1.04) !important;
+          box-shadow: 0 0 28px rgba(245,158,11,0.75), 0 8px 20px rgba(0,0,0,0.5) !important;
+        }
+
+        /* Gold badge for Elite */
+        .plan-badge-gold {
+          display: inline-block;
+          padding: 0.25rem 0.85rem;
+          font-family: 'Outfit', sans-serif;
+          font-size: 0.65rem;
+          font-weight: 800;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          border-radius: 100px;
+          margin-bottom: 0.6rem;
+          background: linear-gradient(135deg, #f59e0b, #d97706);
+          color: #0a0a0a;
+          box-shadow: 0 0 12px rgba(245,158,11,0.5), 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        /* Neutral badge for Pro */
+        .plan-badge-neutral {
+          display: inline-block;
+          padding: 0.2rem 0.75rem;
+          font-family: 'Outfit', sans-serif;
+          font-size: 0.65rem;
+          font-weight: 700;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          border-radius: 100px;
+          margin-bottom: 0.6rem;
+          background: rgba(255,255,255,0.08);
+          color: rgba(255,255,255,0.6);
+          border: 1px solid rgba(255,255,255,0.12);
+        }
+
+        /* Strikethrough old price */
+        .plan-old-price {
+          font-size: 1rem;
+          font-weight: 600;
+          color: rgba(255,255,255,0.3);
+          text-decoration: line-through;
+          margin-bottom: 0.1rem;
+          line-height: 1;
+        }
+
+        /* Gratis highlight */
+        .value-gratis {
+          color: #f59e0b;
+          font-weight: 700;
         }
 
         /* Table body */
