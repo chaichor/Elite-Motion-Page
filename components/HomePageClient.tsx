@@ -366,71 +366,6 @@ export default function HomePageClient() {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════ SERVICES (BENTO) */}
-      <section className="em-section">
-        <div className="container">
-          <div className="em-section-header">
-            <span className="em-badge">Nuestros Servicios</span>
-            <h2 className="em-section-title">
-              Servicios de Producción Audiovisual<br />
-              <span className="em-gradient-text">en El Salvador</span>
-            </h2>
-            <p className="em-section-sub">
-              Soluciones visuales completas para cada industria y necesidad.
-              Video marketing que convierte, conecta y vende.
-            </p>
-          </div>
-
-          <div ref={servicesRef} className="em-bento-grid">
-            {services.map((svc, i) => (
-              <div
-                key={svc.id}
-                className={`bento-card em-bento-card em-bento-${svc.size}`}
-                style={{
-                  '--card-color': svc.color,
-                  opacity: isMobile ? 1 : 0,
-                } as React.CSSProperties}
-              >
-                <div className="em-bento-icon" style={{ color: svc.color }}>{svc.icon}</div>
-                <span className="em-bento-tag">{svc.tag}</span>
-                <h3 className="em-bento-title">{svc.title}</h3>
-                <p className="em-bento-desc">{svc.description}</p>
-                <div className="em-bento-num">{String(i + 1).padStart(2, '0')}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════════════════════════════════════ WHY US */}
-      <section className="em-section">
-        <div className="container">
-          <div className="em-section-header">
-            <span className="em-badge">Diferenciación</span>
-            <h2 className="em-section-title">¿Por qué elegir<br /><span className="em-gradient-text">Elite Motion?</span></h2>
-            <div className="why-accent-line em-accent-line" />
-          </div>
-
-          <div ref={whyRef} className="em-why-grid">
-            {whyUs.map((item, i) => (
-              <div
-                key={item.title}
-                className="why-card em-why-card em-bento-card"
-                style={{
-                  '--card-color': 'var(--em-accent)',
-                  opacity: isMobile ? 1 : 0
-                } as React.CSSProperties}
-              >
-                <div className="em-bento-icon" style={{ color: 'var(--em-accent)' }}>{item.icon}</div>
-                <h3 className="em-bento-title">{item.title}</h3>
-                <p className="em-bento-desc">{item.description}</p>
-                <div className="em-bento-num">{String(i + 1).padStart(2, '0')}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ═══════════════════════════════════════════ PORTFOLIO PREVIEW */}
       <section className="em-section">
         <div className="container">
@@ -517,6 +452,71 @@ export default function HomePageClient() {
             <Link href="/portafolio" className="em-btn em-btn-outline">
               Ver Todos los Proyectos →
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════ SERVICES (BENTO) */}
+      <section className="em-section">
+        <div className="container">
+          <div className="em-section-header">
+            <span className="em-badge">Nuestros Servicios</span>
+            <h2 className="em-section-title">
+              Servicios de Producción Audiovisual<br />
+              <span className="em-gradient-text">en El Salvador</span>
+            </h2>
+            <p className="em-section-sub">
+              Soluciones visuales completas para cada industria y necesidad.
+              Video marketing que convierte, conecta y vende.
+            </p>
+          </div>
+
+          <div ref={servicesRef} className="em-bento-grid">
+            {services.map((svc, i) => (
+              <div
+                key={svc.id}
+                className={`bento-card em-bento-card em-bento-${svc.size}`}
+                style={{
+                  '--card-color': svc.color,
+                  opacity: isMobile ? 1 : 0,
+                } as React.CSSProperties}
+              >
+                <div className="em-bento-icon" style={{ color: svc.color }}>{svc.icon}</div>
+                <span className="em-bento-tag">{svc.tag}</span>
+                <h3 className="em-bento-title">{svc.title}</h3>
+                <p className="em-bento-desc">{svc.description}</p>
+                <div className="em-bento-num">{String(i + 1).padStart(2, '0')}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════ WHY US */}
+      <section className="em-section">
+        <div className="container">
+          <div className="em-section-header">
+            <span className="em-badge">Diferenciación</span>
+            <h2 className="em-section-title">¿Por qué elegir<br /><span className="em-gradient-text">Elite Motion?</span></h2>
+            <div className="why-accent-line em-accent-line" />
+          </div>
+
+          <div ref={whyRef} className="em-why-grid">
+            {whyUs.map((item, i) => (
+              <div
+                key={item.title}
+                className="why-card em-why-card em-bento-card"
+                style={{
+                  '--card-color': 'var(--em-accent)',
+                  opacity: isMobile ? 1 : 0
+                } as React.CSSProperties}
+              >
+                <div className="em-bento-icon" style={{ color: 'var(--em-accent)' }}>{item.icon}</div>
+                <h3 className="em-bento-title">{item.title}</h3>
+                <p className="em-bento-desc">{item.description}</p>
+                <div className="em-bento-num">{String(i + 1).padStart(2, '0')}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
