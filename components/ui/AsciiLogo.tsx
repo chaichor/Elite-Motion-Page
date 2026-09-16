@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { isLiteMotion } from '@/lib/motion';
 
 const HEX = '0123456789ABCDEF';
 
@@ -58,7 +59,7 @@ export default function AsciiLogo({
     const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
 
-    const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const calm = isLiteMotion();
     let palette = document.documentElement.getAttribute('data-theme') === 'light' ? PALETTE_LIGHT : PALETTE_DARK;
     const syncPalette = () => {
       palette = document.documentElement.getAttribute('data-theme') === 'light' ? PALETTE_LIGHT : PALETTE_DARK;

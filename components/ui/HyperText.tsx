@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type ElementType } from 'react';
+import { isLiteMotion } from '@/lib/motion';
 import { cn } from '@/lib/utils';
 
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -78,7 +79,7 @@ export function HyperText({
   useEffect(() => {
     const host = hostRef.current;
     if (!host || !startOnView) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (isLiteMotion()) return;
 
     const io = new IntersectionObserver(
       (entries) => {

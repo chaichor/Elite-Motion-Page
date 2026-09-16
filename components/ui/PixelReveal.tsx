@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { isLiteMotion } from '@/lib/motion';
 import { cn, seededRandom } from '@/lib/utils';
 
 type Grid = { rows: number; cols: number };
@@ -97,9 +98,13 @@ export function PixelReveal({
 
     if (
       trigger === 'mount' ||
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      isLiteMotion()
     ) {
       setRevealed(true);
+      if (isLiteMotion()) {
+        setInColor(true);
+        setSettled(true);
+      }
       return;
     }
 

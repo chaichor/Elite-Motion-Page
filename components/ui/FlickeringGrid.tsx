@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { isLiteMotion } from '@/lib/motion';
 import { cn } from '@/lib/utils';
 
 interface FlickeringGridProps {
@@ -44,7 +45,7 @@ export default function FlickeringGrid({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (isLiteMotion()) return;
 
     let rgb = toRgb(color);
     const step = squareSize + gridGap;

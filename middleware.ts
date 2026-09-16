@@ -57,6 +57,8 @@ function allowProtectedMedia(request: NextRequest) {
 
   if (dest === 'document') return false;
   if (site === 'cross-site') return false;
+  // Next's image optimizer fetches originals with neither dest nor site set.
+  if (!dest && !site) return true;
   if (sameOriginReferer(request)) return true;
   if (request.cookies.get(GATE)?.value === '1') return true;
   if (
@@ -92,7 +94,7 @@ export function middleware(request: NextRequest) {
   const response = NextResponse.next({ request: { headers: requestHeaders } });
   applyCsp(response, nonce, request);
 
-  if (guarded) {
+  if (guarded && !isImageOpt) {
     response.headers.set('Cache-Control', 'private, max-age=300');
     response.headers.set('Cross-Origin-Resource-Policy', 'same-origin');
   }

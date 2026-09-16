@@ -231,13 +231,19 @@ export const homeProjects = HOME_SLUGS.map(
   (slug) => projects.find((project) => project.slug === slug)!
 ).filter(Boolean);
 
-/** Stills only — the home cluster swaps tiles too fast to carry video. */
-export const clusterStills = homeProjects.flatMap((project) =>
-  project.media
-    .filter((item) => item.kind === 'image')
-    .map((item) => ({
-      src: item.src,
-      title: project.title,
-      tag: project.category,
-    }))
-);
+/** Stills only — keep the collage light: skip RAW session files and cap each project. */
+export const clusterStills = homeProjects.flatMap((project) => {
+  const images = project.media.filter((item) => item.kind === 'image');
+  const picked =
+    project.slug === 'zepeda'
+      ? images.slice(0, 2)
+      : project.slug === 'jalisco'
+        ? images.filter((item) => item.src.includes('artes_y_historias')).slice(0, 5)
+        : images.slice(0, 4);
+
+  return picked.map((item) => ({
+    src: item.src,
+    title: project.title,
+    tag: project.category,
+  }));
+});

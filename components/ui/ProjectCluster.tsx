@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
+import { isLiteMotion } from '@/lib/motion';
 
 export type ClusterItem = {
   src: string;
@@ -19,7 +20,7 @@ type Slot = {
 };
 
 /** Hand-placed collage. Percentages of the cluster box, deliberately overlapping. */
-const SLOTS: Slot[] = [
+const DESKTOP_SLOTS: Slot[] = [
   { x: 2, y: 4, w: 15, h: 19, depth: 0.25 },
   { x: 26, y: 2, w: 16, h: 32, depth: 0.35 },
   { x: 40, y: 0, w: 20, h: 20, depth: 0.2 },
@@ -37,6 +38,16 @@ const SLOTS: Slot[] = [
   { x: 80, y: 62, w: 17, h: 30, depth: 0.55 },
 ];
 
+/** Fewer, larger tiles on phones so Safari never holds 15–30 full-res stills. */
+const MOBILE_SLOTS: Slot[] = [
+  { x: 3, y: 4, w: 46, h: 38, depth: 0.4 },
+  { x: 52, y: 2, w: 45, h: 30, depth: 0.28 },
+  { x: 6, y: 40, w: 40, h: 34, depth: 0.7 },
+  { x: 50, y: 34, w: 47, h: 32, depth: 0.85 },
+  { x: 4, y: 72, w: 44, h: 26, depth: 0.5 },
+  { x: 52, y: 68, w: 44, h: 28, depth: 0.6 },
+];
+
 const SWAP_MS = 480;
 
 interface ProjectClusterProps {
@@ -49,51 +60,70 @@ interface ProjectClusterProps {
  * A shuffling collage of project stills. One tile swaps at a time rather than
  * the whole board, which keeps the motion alive without ever looking like a
  * slideshow, and keeps each frame's work to a single image transition.
+ *
+ * SSR and phones always start with the six-tile board so the first HTML never
+ * asks a mobile browser to decode fifteen originals.
  */
 export default function ProjectCluster({ items, onFocusItem }: ProjectClusterProps) {
   const hostRef = useRef<HTMLDivElement>(null);
+  const [slots, setSlots] = useState<Slot[]>(MOBILE_SLOTS);
   const [current, setCurrent] = useState<number[]>(() =>
-    SLOTS.map((_, i) => i % Math.max(items.length, 1))
+    MOBILE_SLOTS.map((_, i) => i % Math.max(items.length, 1))
   );
-  const [previous, setPrevious] = useState<(number | null)[]>(() => SLOTS.map(() => null));
+  const [previous, setPrevious] = useState<(number | null)[]>(() =>
+    MOBILE_SLOTS.map(() => null)
+  );
   const [active, setActive] = useState<number | null>(null);
 
   useEffect(() => {
-    if (items.length <= SLOTS.length) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (isLiteMotion()) return;
+
+    setSlots(DESKTOP_SLOTS);
+    setCurrent(DESKTOP_SLOTS.map((_, i) => i % Math.max(items.length, 1)));
+    setPrevious(DESKTOP_SLOTS.map(() => null));
+  }, [items.length]);
+
+  useEffect(() => {
+    if (items.length <= slots.length) return;
+    if (isLiteMotion()) return;
 
     let tick = 0;
     const id = window.setInterval(() => {
-      const slot = tick % SLOTS.length;
+      const slot = tick % slots.length;
       tick++;
 
       setCurrent((prevIndices) => {
         const shown = new Set(prevIndices);
-        let next = (prevIndices[slot] + SLOTS.length) % items.length;
-        // Never show the same still twice on the board at once.
+        let next = (prevIndices[slot] + slots.length) % items.length;
         while (shown.has(next)) next = (next + 1) % items.length;
 
+        const outgoing = prevIndices[slot];
         setPrevious((p) => {
           const copy = [...p];
-          copy[slot] = prevIndices[slot];
+          copy[slot] = outgoing;
           return copy;
         });
+        window.setTimeout(() => {
+          setPrevious((p) => {
+            const copy = [...p];
+            copy[slot] = null;
+            return copy;
+          });
+        }, SWAP_MS + 40);
 
         const copy = [...prevIndices];
         copy[slot] = next;
         return copy;
       });
-    }, 1400);
+    }, 1600);
 
     return () => window.clearInterval(id);
-  }, [items.length]);
+  }, [items.length, slots.length]);
 
-  /* Pointer parallax, written straight to CSS custom properties so React
-     never re-renders on mouse move. */
   useEffect(() => {
     const host = hostRef.current;
     if (!host) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (isLiteMotion()) return;
     if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
 
     let frame = 0;
@@ -137,7 +167,7 @@ export default function ProjectCluster({ items, onFocusItem }: ProjectClusterPro
 
   return (
     <div ref={hostRef} className="em-cluster">
-      {SLOTS.map((slot, i) => {
+      {slots.map((slot, i) => {
         const item = items[current[i] % items.length];
         const prevIndex = previous[i];
         const prevItem = prevIndex === null ? null : items[prevIndex % items.length];
@@ -166,10 +196,10 @@ export default function ProjectCluster({ items, onFocusItem }: ProjectClusterPro
                 src={prevItem.src}
                 alt=""
                 fill
-                sizes="(max-width: 768px) 40vw, 22vw"
-                quality={70}
+                sizes="(max-width: 768px) 46vw, 18vw"
+                quality={60}
                 className="em-cluster-img is-out"
-                unoptimized
+                unoptimized={prevItem.src.includes('%23')}
                 draggable={false}
               />
             )}
@@ -178,13 +208,13 @@ export default function ProjectCluster({ items, onFocusItem }: ProjectClusterPro
               src={item.src}
               alt={item.title}
               fill
-              sizes="(max-width: 768px) 40vw, 22vw"
-              quality={70}
-              priority={i < 4}
+              sizes="(max-width: 768px) 46vw, 18vw"
+              quality={60}
+              priority={i < 3}
               className="em-cluster-img is-in"
               style={{ animationDuration: `${SWAP_MS}ms` }}
               draggable={false}
-              unoptimized
+              unoptimized={item.src.includes('%23')}
             />
           </figure>
         );

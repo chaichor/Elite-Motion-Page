@@ -2,11 +2,19 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  turbopack: {
+    root: __dirname,
+  },
   experimental: {
     viewTransition: true,
+    optimizePackageImports: ['lucide-react', 'gsap', 'framer-motion'],
   },
   images: {
-    qualities: [70, 75],
+    qualities: [55, 60, 70, 75],
+    formats: ['image/avif', 'image/webp'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+    imageSizes: [96, 128, 256, 384],
+    minimumCacheTTL: 60 * 60 * 24 * 14,
   },
   async headers() {
     return [

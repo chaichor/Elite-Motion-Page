@@ -107,9 +107,10 @@ const WA = 'https://wa.me/50377350934';
 
 /* ─── Mobile detection hook ────────────────────────────────────── */
 function useIsMobile() {
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(true);
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
+    const check = () =>
+      setIsMobile(window.innerWidth < 768 || document.documentElement.classList.contains('em-lite'));
     check();
     window.addEventListener('resize', check);
     return () => window.removeEventListener('resize', check);
@@ -209,7 +210,7 @@ export default function HomePageClient() {
             as="p"
             className="em-hero-subtitle em-hero-enter"
             text="Video, fotografía y dron para restaurantes, Airbnb, inmobiliaria y marcas que necesitan verse mejor que su competencia."
-            delay={900}
+            delay={isMobile ? 0 : 900}
           />
         </div>
 
@@ -295,13 +296,25 @@ export default function HomePageClient() {
                   <span className="em-index-frame">
                     <PixelReveal fill grid="8x8" seed={i + 1}>
                       {still ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={still.src}
-                          alt={still.alt}
-                          className="portfolio-bg-media"
-                          draggable={false}
-                        />
+                        still.src.includes('%23') ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={still.src}
+                            alt={still.alt}
+                            className="portfolio-bg-media"
+                            draggable={false}
+                          />
+                        ) : (
+                          <Image
+                            src={still.src}
+                            alt={still.alt}
+                            fill
+                            sizes="(max-width: 768px) 100vw, 33vw"
+                            quality={70}
+                            className="portfolio-bg-media"
+                            draggable={false}
+                          />
+                        )
                       ) : (
                         <video
                           src={project.cover.src}

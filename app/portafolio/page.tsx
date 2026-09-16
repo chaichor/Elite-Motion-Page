@@ -21,10 +21,10 @@ function Frame({ item, sizes, priority }: { item: Media; sizes: string; priority
       alt={item.alt}
       fill
       sizes={sizes}
-      quality={75}
+      quality={70}
       priority={priority}
       loading={priority ? undefined : 'lazy'}
-      unoptimized
+      unoptimized={item.src.includes('%23')}
       draggable={false}
     />
   );
@@ -166,9 +166,9 @@ export default function Portafolio() {
                 width={1600}
                 height={Math.round(1600 / shot.ratio)}
                 sizes="92vw"
-                quality={75}
+                quality={70}
                 draggable={false}
-                unoptimized
+                unoptimized={shot.src.includes('%23')}
               />
             ) : (
               <video

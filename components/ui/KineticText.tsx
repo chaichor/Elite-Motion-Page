@@ -1,6 +1,7 @@
 'use client';
 
 import { Fragment, useEffect, useRef, useState, type CSSProperties, type ElementType } from 'react';
+import { isLiteMotion } from '@/lib/motion';
 import { cn } from '@/lib/utils';
 
 interface KineticTextProps {
@@ -60,7 +61,7 @@ export function KineticText({
     const host = hostRef.current;
     if (!host) return;
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (isLiteMotion()) {
       setOn(true);
       return;
     }

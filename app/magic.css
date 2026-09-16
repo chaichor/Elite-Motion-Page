@@ -71,6 +71,7 @@
 /* The zoom-on-hover used to be an inline transition on the media node; it now
    lives here because the node is rendered inside PixelReveal. */
 .portfolio-bg-media {
+  object-fit: cover;
   transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
@@ -528,10 +529,11 @@ body:has(.em-404) footer.em-ascii-footer {
   align-items: center;
   gap: 0.6rem;
   font-family: var(--em-mono);
-  font-size: 0.66rem;
-  letter-spacing: 0.32em;
+  font-size: 0.92rem;
+  letter-spacing: 0.12em;
+  font-weight: 500;
   text-transform: uppercase;
-  color: rgba(var(--fg-rgb), 0.4);
+  color: rgba(var(--fg-rgb), 0.55);
 }
 
 .em-eyebrow::before {
@@ -539,6 +541,38 @@ body:has(.em-404) footer.em-ascii-footer {
   width: 28px;
   height: 1px;
   background: var(--em-accent);
+}
+
+html.em-lite .em-kinetic-char {
+  opacity: 0;
+  transform: none !important;
+  filter: none !important;
+  animation: none !important;
+  transition: opacity 0.45s ease var(--em-k-delay, 0ms);
+}
+
+html.em-lite .em-kinetic[data-on='true'] .em-kinetic-char {
+  opacity: 1;
+}
+
+html.em-lite .em-pixel-tiles,
+html.em-lite .em-ripple-layer {
+  display: none;
+}
+
+html.em-lite .em-pixel-media {
+  filter: none !important;
+}
+
+html.em-lite .em-hero-enter {
+  animation-name: emHeroFade;
+  animation-duration: 0.45s;
+  animation-timing-function: ease;
+}
+
+@keyframes emHeroFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {

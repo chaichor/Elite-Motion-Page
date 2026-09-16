@@ -174,7 +174,8 @@ body {
     font-feature-settings: 'ss01' 1, 'cv05' 1;
     background: var(--bg-primary);
     color: var(--text-primary);
-    line-height: 1.6;
+    font-size: 1.0625rem;
+    line-height: 1.65;
     min-height: 100vh;
     overflow-x: hidden;
     transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -763,27 +764,27 @@ canvas {
 }
 
 .em-logo-intro-mark {
-  animation: emLogoHold 4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: emLogoHold 1.9s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @keyframes emLogoHold {
-  0% { opacity: 0; filter: blur(12px); transform: scale(0.96); }
-  18% { opacity: 1; filter: blur(0); transform: scale(1); }
-  82% { opacity: 1; filter: blur(0); transform: scale(1); }
-  100% { opacity: 0.85; filter: blur(2px); transform: scale(1.02); }
+  0% { opacity: 0; transform: scale(0.98); }
+  22% { opacity: 1; transform: scale(1); }
+  78% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0.88; transform: scale(1.01); }
 }
 
 ::view-transition-old(root) {
-  animation: emVtOut 0.42s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: emVtOut 0.22s ease both;
 }
 ::view-transition-new(root) {
-  animation: emVtIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: emVtIn 0.28s ease both;
 }
 @keyframes emVtOut {
-  to { opacity: 0; filter: blur(8px); }
+  to { opacity: 0; }
 }
 @keyframes emVtIn {
-  from { opacity: 0; filter: blur(8px); }
+  from { opacity: 0; }
 }
 
 .em-ascii-footer {
@@ -822,8 +823,9 @@ canvas {
   gap: 0.75rem 1.5rem;
   margin-top: 1.75rem;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.68rem;
-  letter-spacing: 0.14em;
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  font-weight: 500;
   text-transform: uppercase;
   color: rgba(var(--fg-rgb), 0.45);
 }
@@ -878,8 +880,8 @@ canvas {
   border: 1px solid rgba(var(--fg-rgb), 0.12);
   padding: 0.55rem 1rem;
   font-family: var(--em-ff);
-  font-size: 0.78rem;
-  letter-spacing: 0.04em;
+  font-size: 0.9rem;
+  letter-spacing: 0.03em;
   cursor: pointer;
   border-radius: 100px;
   transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
@@ -1342,9 +1344,9 @@ canvas {
   gap: 0.65rem;
   padding: 0.95rem 1.7rem;
   font-family: var(--em-mono);
-  font-size: 0.68rem;
-  font-weight: 400;
-  letter-spacing: 0.2em;
+  font-size: 0.92rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   border-radius: 0;
   border: 1px solid transparent;
@@ -1479,8 +1481,8 @@ canvas {
 
 .em-hero-subtitle {
   font-family: var(--em-ff);
-  font-size: clamp(1rem, 1.8vw, 1.2rem);
-  color: rgba(var(--fg-rgb),0.65);
+  font-size: clamp(1.15rem, 2.2vw, 1.42rem);
+  color: rgba(var(--fg-rgb),0.72);
   max-width: 680px;
   line-height: 1.7;
   margin: 0;
@@ -2066,4 +2068,47 @@ canvas {
   background: var(--paper);
   color: var(--on-paper);
   border-color: var(--paper);
+}
+
+html.em-lite {
+  scroll-behavior: auto;
+}
+
+html.em-lite [data-rise='0'] {
+  opacity: 0;
+  transform: none;
+}
+
+html.em-lite [data-rise='1'] {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.45s ease var(--rise-delay, 0ms);
+}
+
+html.em-lite .em-flicker-host {
+  display: none;
+}
+
+html.em-lite .em-logo-intro {
+  transition: opacity 0.4s ease;
+}
+
+html.em-lite .em-logo-intro.is-leaving {
+  clip-path: none;
+  opacity: 0;
+}
+
+html.em-lite .em-logo-intro-mark {
+  animation-duration: 1.35s;
+}
+
+html.em-lite ::view-transition-old(root),
+html.em-lite ::view-transition-new(root) {
+  animation: none !important;
+}
+
+html.em-lite .em-map-hub-glow,
+html.em-lite .em-pulse,
+html.em-lite .em-scroll-dot {
+  animation: none !important;
 }

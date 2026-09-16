@@ -2,11 +2,15 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { isLiteMotion } from '@/lib/motion';
 
 /**
  * The overlay ships in the server markup so it covers the page from the very
  * first paint. `html.em-intro-skip`, set by the inline script in the layout,
  * hides it for repeat visitors before any of this runs.
+ *
+ * The home collage hydrates underneath while this is up, so the first screen
+ * is already decoding when the overlay lets go.
  */
 export default function LogoIntro() {
   const [leaving, setLeaving] = useState(false);
@@ -21,12 +25,13 @@ export default function LogoIntro() {
       return;
     }
 
-    const leaveAt = window.setTimeout(() => setLeaving(true), 4000);
+    const lite = isLiteMotion();
+    const leaveAt = window.setTimeout(() => setLeaving(true), lite ? 1100 : 1800);
     const doneAt = window.setTimeout(() => {
       sessionStorage.setItem('em-logo-intro', '1');
       root.classList.remove('em-intro-lock');
       setDone(true);
-    }, 5000);
+    }, lite ? 1550 : 2400);
 
     return () => {
       window.clearTimeout(leaveAt);

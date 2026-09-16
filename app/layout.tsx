@@ -115,7 +115,7 @@ export default async function RootLayout({
           nonce={nonce}
           suppressHydrationWarning
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('em-theme');if(t!=='light'&&t!=='dark')t='dark';document.documentElement.setAttribute('data-theme',t);var skip=sessionStorage.getItem('em-logo-intro')||matchMedia('(prefers-reduced-motion: reduce)').matches;document.documentElement.classList.add(skip?'em-intro-skip':'em-intro-lock')}catch(e){document.documentElement.setAttribute('data-theme','dark');document.documentElement.classList.add('em-intro-skip')}})()`,
+            __html: `(function(){try{var r=document.documentElement;var t=localStorage.getItem('em-theme');if(t!=='light'&&t!=='dark')t='dark';r.setAttribute('data-theme',t);if(matchMedia('(max-width:768px),(hover:none) and (pointer:coarse)').matches)r.classList.add('em-lite');var skip=sessionStorage.getItem('em-logo-intro')||matchMedia('(prefers-reduced-motion: reduce)').matches;r.classList.add(skip?'em-intro-skip':'em-intro-lock')}catch(e){document.documentElement.setAttribute('data-theme','dark');document.documentElement.classList.add('em-intro-skip')}})()`,
           }}
         />
       </head>
