@@ -163,9 +163,8 @@ export default function Portafolio() {
                 key={shot.src}
                 src={shot.src}
                 alt={shot.alt}
-                width={1600}
-                height={Math.round(1600 / shot.ratio)}
-                sizes="92vw"
+                fill
+                sizes="100vw"
                 quality={70}
                 draggable={false}
                 unoptimized={shot.src.includes('%23')}

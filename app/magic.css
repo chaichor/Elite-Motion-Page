@@ -543,6 +543,10 @@ body:has(.em-404) footer.em-ascii-footer {
   background: var(--em-accent);
 }
 
+html.em-lite .em-kinetic {
+  perspective: none;
+}
+
 html.em-lite .em-kinetic-char {
   opacity: 0;
   transform: none !important;

@@ -1887,15 +1887,22 @@ canvas {
     display: flex;
     align-items: flex-start; /* Switch to flex-start on mobile to control top gap better */
   }
-  .em-hero-title { font-size: clamp(2rem, 8vw, 2.8rem); }
-  .em-hero-subtitle { font-size: 0.95rem; }
+  .em-hero-title { font-size: clamp(2.5rem, 11vw, 3.4rem); }
+  .em-hero-subtitle { font-size: 1.05rem; }
   .hero-orb-1, .hero-orb-2 { display: none; }
   .hero-grid-lines { display: none; }
 
   /* Buttons */
   .em-hero-btns { flex-direction: column; width: 100%; max-width: 340px; }
   .em-hero-btns .em-btn,
-  .em-cta-btns .em-btn { width: 100%; padding: 0.9rem 1.5rem; }
+  .em-cta-btns .em-btn {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    white-space: normal;
+    line-height: 1.25;
+  }
 
   /* Stats */
   .em-stats-grid {
@@ -1924,8 +1931,8 @@ canvas {
   /* Sections */
   .em-section { padding: 4rem 0; }
   .em-section-header { margin-bottom: 2.5rem; }
-  .em-section-title { font-size: clamp(1.75rem, 6vw, 2.4rem); }
-  .em-cta-title { font-size: clamp(1.75rem, 6vw, 2.4rem); }
+  .em-section-title { font-size: clamp(2.4rem, 8.5vw, 3.2rem); }
+  .em-cta-title { font-size: clamp(2.4rem, 8.5vw, 3.2rem); }
   .em-cta-btns { flex-direction: column; width: 100%; max-width: 340px; }
 
   /* Mobile fade-in */
@@ -1946,7 +1953,7 @@ canvas {
    RESPONSIVE — SMALL MOBILE (≤425px)
    ═════════════════════════════════════════════════════════ */
 @media (max-width: 425px) {
-  .em-hero-title { font-size: clamp(1.7rem, 7.5vw, 2.2rem); }
+  .em-hero-title { font-size: clamp(2.35rem, 12vw, 3rem); }
   .em-stat-value { font-size: 2.2rem; }
   .em-bento-card { padding: 1.5rem; min-height: 200px; }
   .em-why-card { padding: 1.25rem; }

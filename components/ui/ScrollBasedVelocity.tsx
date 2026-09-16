@@ -10,7 +10,6 @@ import {
   useTransform,
   useVelocity,
 } from 'framer-motion';
-import { isLiteMotion } from '@/lib/motion';
 import { cn } from '@/lib/utils';
 
 const wrap = (min: number, max: number, value: number) => {
@@ -59,11 +58,11 @@ export function ScrollVelocityRow({
   });
 
   const directionRef = useRef<1 | -1>(1);
-  const [reduced, setReduced] = useState(true);
+  const [reduced, setReduced] = useState(false);
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const sync = () => setReduced(isLiteMotion());
+    const sync = () => setReduced(mq.matches);
     sync();
     mq.addEventListener('change', sync);
     return () => mq.removeEventListener('change', sync);
