@@ -16,6 +16,7 @@ function csp(nonce: string, dev: boolean) {
     "font-src 'self' data: https://fonts.gstatic.com",
     "media-src 'self' blob:",
     `connect-src 'self' https://www.facebook.com https://connect.facebook.net${dev ? ' ws: wss:' : ''}`,
+    "frame-src 'self' https://www.facebook.com https://connect.facebook.net",
     "worker-src 'self' blob:",
     "object-src 'none'",
     "base-uri 'self'",

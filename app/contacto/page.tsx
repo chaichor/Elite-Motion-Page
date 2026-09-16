@@ -127,7 +127,13 @@ export default function Contacto() {
           </a>
         </div>
 
-        <form className="em-quote-form" onSubmit={handleSubmit} noValidate>
+        <form
+          className="em-quote-form"
+          action="/api/contact"
+          method="post"
+          onSubmit={handleSubmit}
+          noValidate
+        >
           <input
             type="text"
             name="company"

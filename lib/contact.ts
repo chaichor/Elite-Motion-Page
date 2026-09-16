@@ -77,6 +77,9 @@ export function parseContactBody(
 }
 
 export function isTrustedOrigin(request: Request) {
+  const site = request.headers.get('sec-fetch-site');
+  if (site === 'same-origin' || site === 'same-site') return true;
+
   const host = request.headers.get('host');
   if (!host) return false;
 
