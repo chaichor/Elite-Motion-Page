@@ -9,12 +9,27 @@ import {
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-export function GET() {
-  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
-}
-
 function accessKey() {
   return process.env.WEB3FORMS_KEY?.trim().replace(/^["']|["']$/g, '') ?? '';
+}
+
+async function readBody(request: Request) {
+  const contentType = request.headers.get('content-type') || '';
+
+  if (contentType.includes('application/json')) {
+    return request.json();
+  }
+
+  const form = await request.formData();
+  return {
+    nombre: form.get('nombre'),
+    email: form.get('email'),
+    telefono: form.get('telefono'),
+    servicio: form.get('servicio'),
+    presupuesto: form.get('presupuesto'),
+    descripcion: form.get('descripcion'),
+    trap: form.get('trap') || form.get('company'),
+  };
 }
 
 export async function POST(request: Request) {
@@ -31,7 +46,7 @@ export async function POST(request: Request) {
 
   let raw: unknown;
   try {
-    raw = await request.json();
+    raw = await readBody(request);
   } catch {
     return NextResponse.json({ error: 'Solicitud inválida.' }, { status: 400 });
   }
@@ -54,30 +69,29 @@ export async function POST(request: Request) {
   const { nombre, email, telefono, servicio, presupuesto, descripcion } = parsed.data;
 
   try {
-    const form = new FormData();
-    form.append('access_key', key);
-    form.append('subject', `Nueva Cotización: ${servicio} — ${nombre}`);
-    form.append('from_name', 'Elite Motion');
-    form.append('name', nombre);
-    form.append('email', email);
-    form.append('phone', telefono || 'No indicado');
-    form.append('replyto', email);
-    form.append(
-      'message',
-      [
-        `Cliente: ${nombre}`,
-        `Servicio: ${servicio}`,
-        `Presupuesto: ${presupuesto || 'No indicado'}`,
-        `WhatsApp: ${telefono || 'No indicado'}`,
-        '',
-        descripcion,
-      ].join('\n')
-    );
-
     const web3Response = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
-      headers: { Accept: 'application/json' },
-      body: form,
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({
+        access_key: key,
+        subject: `Nueva Cotización: ${servicio} — ${nombre}`,
+        from_name: 'Elite Motion',
+        name: nombre,
+        email,
+        phone: telefono || 'No indicado',
+        replyto: email,
+        message: [
+          `Cliente: ${nombre}`,
+          `Servicio: ${servicio}`,
+          `Presupuesto: ${presupuesto || 'No indicado'}`,
+          `WhatsApp: ${telefono || 'No indicado'}`,
+          '',
+          descripcion,
+        ].join('\n'),
+      }),
     });
 
     const text = await web3Response.text();
@@ -86,15 +100,7 @@ export async function POST(request: Request) {
       data = JSON.parse(text) as { success?: boolean };
     } catch {
       console.error('Web3Forms non-JSON', web3Response.status);
-      return NextResponse.json(
-        {
-          error: 'No pudimos enviar el formulario.',
-          ...(process.env.NODE_ENV !== 'production'
-            ? { detail: `web3-status-${web3Response.status}` }
-            : {}),
-        },
-        { status: 502 }
-      );
+      return NextResponse.json({ error: 'No pudimos enviar el formulario.' }, { status: 502 });
     }
 
     if (data.success) {
@@ -102,21 +108,11 @@ export async function POST(request: Request) {
     }
 
     console.error('Web3Forms rejected the submission', web3Response.status);
-    return NextResponse.json(
-      {
-        error: 'No pudimos enviar el formulario.',
-        ...(process.env.NODE_ENV !== 'production' ? { detail: `web3-reject-${web3Response.status}` } : {}),
-      },
-      { status: 502 }
-    );
+    return NextResponse.json({ error: 'No pudimos enviar el formulario.' }, { status: 502 });
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'unknown';
-    console.error('Web3Forms request failed', message);
+    console.error('Web3Forms request failed', error instanceof Error ? error.message : error);
     return NextResponse.json(
-      {
-        error: 'Error del servidor. Intenta de nuevo más tarde.',
-        ...(process.env.NODE_ENV !== 'production' ? { detail: message } : {}),
-      },
+      { error: 'Error del servidor. Intenta de nuevo más tarde.' },
       { status: 500 }
     );
   }

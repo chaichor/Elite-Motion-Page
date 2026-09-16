@@ -41,6 +41,7 @@ export default function Contacto() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     if (!validate()) return;
 
     setStatus('sending');
@@ -49,7 +50,11 @@ export default function Contacto() {
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        cache: 'no-store',
         body: JSON.stringify({
           nombre,
           email,
@@ -60,7 +65,13 @@ export default function Contacto() {
           trap,
         }),
       });
-      const data = (await res.json()) as { success?: boolean; error?: string };
+
+      let data: { success?: boolean; error?: string } = {};
+      try {
+        data = (await res.json()) as { success?: boolean; error?: string };
+      } catch {
+        data = {};
+      }
 
       if (res.ok && data.success) {
         setStatus('sent');
@@ -127,13 +138,7 @@ export default function Contacto() {
           </a>
         </div>
 
-        <form
-          className="em-quote-form"
-          action="/api/contact"
-          method="post"
-          onSubmit={handleSubmit}
-          noValidate
-        >
+        <form className="em-quote-form" method="post" onSubmit={handleSubmit} noValidate>
           <input
             type="text"
             name="company"
@@ -144,22 +149,44 @@ export default function Contacto() {
             aria-hidden="true"
             style={{ position: 'absolute', left: '-9999px', height: 0, width: 0, opacity: 0 }}
           />
+          <input type="hidden" name="servicio" value={servicio} />
+          <input type="hidden" name="presupuesto" value={presupuesto} />
 
           <label>
             <span>Nombre</span>
-            <input value={nombre} onChange={(e) => setNombre(e.target.value)} placeholder="Tu nombre" maxLength={80} />
+            <input
+              name="nombre"
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
+              placeholder="Tu nombre"
+              maxLength={80}
+            />
             {errors.nombre && <em className="em-field-error">{errors.nombre}</em>}
           </label>
 
           <label>
             <span>Correo</span>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="tu@correo.com" maxLength={120} />
+            <input
+              name="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="tu@correo.com"
+              maxLength={120}
+            />
             {errors.email && <em className="em-field-error">{errors.email}</em>}
           </label>
 
           <label>
             <span>WhatsApp <em className="em-optional">opcional</em></span>
-            <input type="tel" value={telefono} onChange={(e) => setTelefono(e.target.value)} placeholder="+503 0000 0000" maxLength={40} />
+            <input
+              name="telefono"
+              type="tel"
+              value={telefono}
+              onChange={(e) => setTelefono(e.target.value)}
+              placeholder="+503 0000 0000"
+              maxLength={40}
+            />
           </label>
 
           <fieldset>
@@ -200,6 +227,7 @@ export default function Contacto() {
           <label>
             <span>El proyecto</span>
             <textarea
+              name="descripcion"
               value={descripcion}
               onChange={(e) => setDescripcion(e.target.value)}
               placeholder="Qué necesitas, dónde y para cuándo."
