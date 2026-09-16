@@ -76,27 +76,33 @@ export function parseContactBody(
   return { ok: true, data };
 }
 
+function hostName(value: string) {
+  try {
+    return new URL(value).hostname.replace(/^www\./i, '').toLowerCase();
+  } catch {
+    return '';
+  }
+}
+
+function requestHost(request: Request) {
+  const raw = request.headers.get('host') || request.headers.get('x-forwarded-host') || '';
+  return raw.split(',')[0]?.trim().replace(/:\d+$/, '').replace(/^www\./i, '').toLowerCase() || '';
+}
+
 export function isTrustedOrigin(request: Request) {
   const site = request.headers.get('sec-fetch-site');
   if (site === 'same-origin' || site === 'same-site') return true;
 
-  const host = request.headers.get('host');
+  const host = requestHost(request);
   if (!host) return false;
 
-  const matches = (value: string) => {
-    try {
-      return new URL(value).host === host;
-    } catch {
-      return false;
-    }
-  };
+  const origin = hostName(request.headers.get('origin') || '');
+  const referer = hostName(request.headers.get('referer') || '');
+  const incoming = origin || referer;
+  if (!incoming) return false;
 
-  const origin = request.headers.get('origin');
-  if (origin) return matches(origin);
-
-  const referer = request.headers.get('referer');
-  if (referer) return matches(referer);
-
+  if (incoming === host) return true;
+  if (incoming.endsWith('.vercel.app') && host.endsWith('.vercel.app')) return true;
   return false;
 }
 

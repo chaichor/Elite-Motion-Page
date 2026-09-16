@@ -8,9 +8,14 @@ import {
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
+export const maxDuration = 15;
 
 function accessKey() {
-  return process.env.WEB3FORMS_KEY?.trim().replace(/^["']|["']$/g, '') ?? '';
+  const raw =
+    process.env.WEB3FORMS_KEY ||
+    process.env.WEB3FORMS_ACCESS_KEY ||
+    '';
+  return raw.trim().replace(/^["']|["']$/g, '');
 }
 
 async function readBody(request: Request) {
@@ -61,7 +66,7 @@ export async function POST(request: Request) {
   }
 
   const key = accessKey();
-  if (!key || key === 'YOUR_ACCESS_KEY_HERE') {
+  if (!key) {
     console.error('WEB3FORMS_KEY missing');
     return NextResponse.json({ error: 'No pudimos enviar el formulario.' }, { status: 500 });
   }
@@ -69,45 +74,33 @@ export async function POST(request: Request) {
   const { nombre, email, telefono, servicio, presupuesto, descripcion } = parsed.data;
 
   try {
+    const formData = new FormData();
+    formData.append('access_key', key);
+    formData.append('subject', `Nueva Cotización: ${servicio} — ${nombre}`);
+    formData.append('from_name', 'Elite Motion');
+    formData.append('name', nombre);
+    formData.append('email', email);
+    formData.append('message', [
+      `Cliente: ${nombre}`,
+      `Servicio: ${servicio}`,
+      `Presupuesto: ${presupuesto || 'No indicado'}`,
+      `WhatsApp: ${telefono || 'No indicado'}`,
+      '',
+      descripcion,
+    ].join('\n'));
+
     const web3Response = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      body: JSON.stringify({
-        access_key: key,
-        subject: `Nueva Cotización: ${servicio} — ${nombre}`,
-        from_name: 'Elite Motion',
-        name: nombre,
-        email,
-        phone: telefono || 'No indicado',
-        replyto: email,
-        message: [
-          `Cliente: ${nombre}`,
-          `Servicio: ${servicio}`,
-          `Presupuesto: ${presupuesto || 'No indicado'}`,
-          `WhatsApp: ${telefono || 'No indicado'}`,
-          '',
-          descripcion,
-        ].join('\n'),
-      }),
+      body: formData,
     });
 
-    const text = await web3Response.text();
-    let data: { success?: boolean } = {};
-    try {
-      data = JSON.parse(text) as { success?: boolean };
-    } catch {
-      console.error('Web3Forms non-JSON', web3Response.status);
-      return NextResponse.json({ error: 'No pudimos enviar el formulario.' }, { status: 502 });
-    }
+    const data = (await web3Response.json()) as { success?: boolean; message?: string };
 
     if (data.success) {
       return NextResponse.json({ success: true });
     }
 
-    console.error('Web3Forms rejected the submission', web3Response.status);
+    console.error('Web3Forms rejected', web3Response.status, data.message);
     return NextResponse.json({ error: 'No pudimos enviar el formulario.' }, { status: 502 });
   } catch (error) {
     console.error('Web3Forms request failed', error instanceof Error ? error.message : error);
