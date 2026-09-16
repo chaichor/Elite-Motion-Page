@@ -64,26 +64,29 @@ export default function ContactForm({ accessKey }: Props) {
     }
 
     try {
-      const formData = new FormData();
-      formData.append('access_key', accessKey);
-      formData.append('subject', `Nueva Cotización: ${servicio} — ${nombre.trim()}`);
-      formData.append('from_name', 'Elite Motion');
-      formData.append('name', nombre.trim());
-      formData.append('email', email.trim());
-      formData.append('message', [
-        `Cliente: ${nombre.trim()}`,
-        `Servicio: ${servicio}`,
-        `Presupuesto: ${presupuesto || 'No indicado'}`,
-        `WhatsApp: ${telefono.trim() || 'No indicado'}`,
-        '',
-        descripcion.trim(),
-      ].join('\n'));
-      formData.append('botcheck', '');
+      const nombreLimpio = nombre.trim();
+      const asunto = `Nueva Cotización: ${servicio} - ${nombreLimpio}`;
 
       const response = await fetch(WEB3FORMS_URL, {
         method: 'POST',
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
         credentials: 'omit',
+        body: JSON.stringify({
+          access_key: accessKey,
+          subject: asunto,
+          from_name: 'Elite Motion',
+          name: nombreLimpio,
+          email: email.trim(),
+          Asunto: asunto,
+          Servicio: servicio,
+          Presupuesto: presupuesto || 'No indicado',
+          WhatsApp: telefono.trim() || 'No indicado',
+          message: descripcion.trim(),
+          botcheck: '',
+        }),
       });
 
       let data: { success?: boolean; message?: string } = {};
