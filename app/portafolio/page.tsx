@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import { ArrowLeft, ArrowRight, X } from 'lucide-react';
 import { PixelReveal } from '@/components/ui/PixelReveal';
@@ -56,10 +57,12 @@ export default function Portafolio() {
     };
 
     document.addEventListener('keydown', onKey);
+    document.documentElement.classList.add('em-viewer-open');
     document.body.style.overflow = 'hidden';
 
     return () => {
       document.removeEventListener('keydown', onKey);
+      document.documentElement.classList.remove('em-viewer-open');
       document.body.style.overflow = '';
     };
   }, [viewer, close, step]);
@@ -136,74 +139,81 @@ export default function Portafolio() {
         ))}
       </ol>
 
-      {viewer && shot && (
-        <div
-          className="em-viewer"
-          role="dialog"
-          aria-modal="true"
-          aria-label={viewer.project.title}
-        >
-          <div className="em-viewer-bar">
-            <span className="em-viewer-kicker">
-              <strong>{viewer.project.title}</strong> — {viewer.project.client}
-            </span>
-            <div className="em-viewer-tools">
-              <span className="em-viewer-count">
-                {pad(viewer.index + 1)} / {pad(viewer.project.media.length)}
+      {viewer &&
+        shot &&
+        createPortal(
+          <div
+            className="em-viewer"
+            role="dialog"
+            aria-modal="true"
+            aria-label={viewer.project.title}
+          >
+            <div className="em-viewer-bar">
+              <span className="em-viewer-kicker">
+                <strong>{viewer.project.title}</strong> — {viewer.project.client}
               </span>
-              <button className="em-viewer-btn em-viewer-close" onClick={close} aria-label="Cerrar">
-                <X size={18} />
+              <div className="em-viewer-tools">
+                <span className="em-viewer-count">
+                  {pad(viewer.index + 1)} / {pad(viewer.project.media.length)}
+                </span>
+                <button className="em-viewer-btn em-viewer-close" onClick={close} aria-label="Cerrar">
+                  <X size={18} />
+                </button>
+              </div>
+            </div>
+
+            <div className="em-viewer-stage" data-kind={shot.kind}>
+              <div className="em-viewer-media">
+                {shot.kind === 'image' ? (
+                  <Image
+                    key={shot.src}
+                    src={shot.src}
+                    alt={shot.alt}
+                    fill
+                    sizes="100vw"
+                    quality={70}
+                    draggable={false}
+                    unoptimized={shot.src.includes('%23')}
+                    style={{ objectFit: 'contain', objectPosition: 'center' }}
+                  />
+                ) : (
+                  <video
+                    key={shot.src}
+                    src={shot.src}
+                    controls
+                    autoPlay
+                    loop
+                    playsInline
+                    preload="metadata"
+                    controlsList="nodownload noplaybackrate noremoteplayback"
+                    disablePictureInPicture
+                    disableRemotePlayback
+                  />
+                )}
+              </div>
+            </div>
+
+            <div className="em-viewer-arrows">
+              <button
+                className="em-viewer-btn"
+                onClick={() => step(-1)}
+                disabled={viewer.index === 0}
+                aria-label="Pieza anterior"
+              >
+                <ArrowLeft size={18} />
+              </button>
+              <button
+                className="em-viewer-btn"
+                onClick={() => step(1)}
+                disabled={viewer.index === viewer.project.media.length - 1}
+                aria-label="Pieza siguiente"
+              >
+                <ArrowRight size={18} />
               </button>
             </div>
-          </div>
-
-          <div className="em-viewer-stage">
-            {shot.kind === 'image' ? (
-              <Image
-                key={shot.src}
-                src={shot.src}
-                alt={shot.alt}
-                fill
-                sizes="100vw"
-                quality={70}
-                draggable={false}
-                unoptimized={shot.src.includes('%23')}
-              />
-            ) : (
-              <video
-                key={shot.src}
-                src={shot.src}
-                controls
-                autoPlay
-                loop
-                playsInline
-                controlsList="nodownload noplaybackrate noremoteplayback"
-                disablePictureInPicture
-                disableRemotePlayback
-              />
-            )}
-          </div>
-
-          <div className="em-viewer-arrows">
-            <button
-              className="em-viewer-btn"
-              onClick={() => step(-1)}
-              disabled={viewer.index === 0}
-              aria-label="Pieza anterior"
-            >
-              <ArrowLeft size={18} />
-            </button>
-            <button
-              className="em-viewer-btn"
-              onClick={() => step(1)}
-              disabled={viewer.index === viewer.project.media.length - 1}
-              aria-label="Pieza siguiente"
-            >
-              <ArrowRight size={18} />
-            </button>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
     </div>
   );
 }
