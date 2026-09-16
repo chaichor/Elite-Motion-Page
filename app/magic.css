@@ -1,0 +1,569 @@
+/* =========================================================
+   ELITE MOTION — MOTION LAYER
+   Pixel reveal · kinetic type · hyper text · scroll velocity
+   flickering grid · ripple · smooth cursor · ASCII footer
+   ========================================================= */
+
+/* ── Pixel reveal ──────────────────────────────────────── */
+.em-pixel {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.em-pixel--fill {
+  position: absolute;
+  inset: 0;
+}
+
+.em-pixel-media {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+.em-pixel-media > img,
+.em-pixel-media > video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.em-pixel-tiles {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  pointer-events: none;
+  z-index: 3;
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+.em-pixel-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: var(--em-pixel-tile, var(--bg-primary));
+}
+
+.em-pixel-tiles > span {
+  display: block;
+  min-width: 0;
+  min-height: 0;
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity;
+}
+
+/* The lightbox letterboxes rather than crops, so it opts out of the cover fit. */
+.em-lightbox-stage .em-pixel-media > img,
+.em-lightbox-stage .em-pixel-media > video {
+  object-fit: contain;
+}
+
+/* The zoom-on-hover used to be an inline transition on the media node; it now
+   lives here because the node is rendered inside PixelReveal. */
+.portfolio-bg-media {
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Coverage feature copy — global because these paragraphs render through
+   HyperText and so fall outside the section's styled-jsx scope. */
+.em-coverage-item .em-feature-title {
+  font-size: 1rem;
+  margin-bottom: 4px;
+  color: #fff;
+  font-weight: 700;
+}
+
+.em-coverage-item .em-feature-p {
+  font-size: 0.88rem;
+  color: rgba(var(--fg-rgb), 0.45);
+  line-height: 1.5;
+}
+
+/* ── Kinetic text ──────────────────────────────────────── */
+.em-kinetic {
+  display: block;
+  perspective: 900px;
+}
+
+.em-kinetic-line {
+  display: block;
+  text-wrap: balance;
+}
+
+.em-kinetic-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+/* The Söhne/Reckless pairing: grotesque headline, serif italic on the
+   emphasised phrase. Scoped to kinetic headings so the accent colour used
+   elsewhere is untouched. */
+.em-kinetic .em-gradient-text {
+  font-family: var(--em-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+}
+
+.em-kinetic-char {
+  display: inline-block;
+  transform-origin: 50% 90%;
+  opacity: 0;
+  transform: translate3d(var(--em-k-x, 0), 0.5em, 0) rotateX(-84deg) scale(0.9);
+  filter: blur(7px);
+  transition:
+    opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) var(--em-k-delay, 0ms),
+    transform 0.95s cubic-bezier(0.16, 1, 0.3, 1) var(--em-k-delay, 0ms),
+    filter 0.55s ease var(--em-k-delay, 0ms);
+}
+
+.em-kinetic[data-on='true'] .em-kinetic-char {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+}
+
+/* fill-mode:none means the loop leaves the entry transition alone until the
+   delay elapses, so the two never fight over `transform`. */
+.em-kinetic[data-on='true'][data-loop='true'] .em-kinetic-char {
+  animation: emKineticWave 5s ease-in-out infinite;
+  animation-delay: calc(var(--em-k-loop-delay, 0ms) + 1.4s);
+}
+
+@keyframes emKineticWave {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  38% {
+    transform: translate3d(0, -0.055em, 0) rotate(calc(var(--em-k-tilt, 0deg) * 0.05));
+  }
+  66% {
+    transform: translate3d(0, 0.025em, 0) rotate(0deg);
+  }
+}
+
+/* ── Hyper text ────────────────────────────────────────── */
+.em-hyper {
+  font-variant-ligatures: none;
+  font-kerning: none;
+}
+
+/* ── Hero entrance (headline is owned by KineticText) ──── */
+.em-hero-enter {
+  opacity: 0;
+  animation: emHeroEnter 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.em-eyebrow.em-hero-enter {
+  animation-delay: 0.15s;
+}
+
+.em-hero-subtitle.em-hero-enter {
+  animation-delay: 0.95s;
+}
+
+.em-hero-btns.em-hero-enter {
+  animation-delay: 1.15s;
+}
+
+@keyframes emHeroEnter {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── Scroll based velocity ─────────────────────────────── */
+.em-velocity-band {
+  position: relative;
+  padding: 4.5rem 0;
+  border-top: 1px solid var(--em-border);
+  border-bottom: 1px solid var(--em-border);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--em-accent) 8%, transparent), transparent 60%);
+  overflow: hidden;
+}
+
+.em-velocity {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.05em;
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.em-velocity-row {
+  display: flex;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.em-velocity-track {
+  display: flex;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.em-velocity-track > span {
+  display: block;
+  flex-shrink: 0;
+  padding-right: 0.35em;
+}
+
+.em-velocity-serif {
+  font-family: var(--em-serif);
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: -0.02em;
+  color: rgba(var(--fg-rgb), 0.92);
+  font-size: clamp(2.6rem, 8vw, 7rem);
+  line-height: 1.02;
+}
+
+.em-velocity-outline {
+  font-family: var(--em-sans);
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  font-size: clamp(2.4rem, 7.5vw, 6.4rem);
+  line-height: 1.02;
+  color: transparent;
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--em-accent) 70%, transparent);
+}
+
+.em-velocity-em {
+  color: var(--em-accent);
+}
+
+/* ── Flickering grid ───────────────────────────────────── */
+.em-flicker-grid {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.em-flicker-host {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mask-image: radial-gradient(ellipse at center, #000 20%, transparent 72%);
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 20%, transparent 72%);
+}
+
+/* ── Ripple ────────────────────────────────────────────── */
+.em-ripple {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.em-ripple-content {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.em-ripple-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.em-ripple-layer > span {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  opacity: 0.55;
+  animation-name: emRipple;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode: forwards;
+}
+
+@keyframes emRipple {
+  to {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+/* ── Smooth cursor ─────────────────────────────────────── */
+html.em-cursor-on,
+html.em-cursor-on *,
+html.em-cursor-on *::before,
+html.em-cursor-on *::after {
+  cursor: none !important;
+}
+
+.em-cursor,
+.em-cursor * {
+  pointer-events: none !important;
+}
+
+.em-cursor {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+html.em-cursor-live .em-cursor {
+  opacity: 1;
+}
+
+.em-cursor-arrow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 26px;
+  height: 30px;
+  /* Matches the arrow tip in the SVG so rotation and scale pivot on the
+     hotspot rather than the middle of the glyph. */
+  transform-origin: 2.5px 2.2px;
+  color: var(--em-accent);
+  filter: drop-shadow(0 0 8px var(--accent-glow));
+  will-change: transform;
+}
+
+.em-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--em-accent) 45%, transparent);
+  will-change: transform;
+  transition:
+    width 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+    height 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.28s ease,
+    border-color 0.28s ease;
+}
+
+html.em-cursor-hot .em-cursor-ring {
+  width: 64px;
+  height: 64px;
+  background: color-mix(in srgb, var(--em-accent) 10%, transparent);
+  border-color: color-mix(in srgb, var(--em-accent) 85%, transparent);
+}
+
+html.em-cursor-press .em-cursor-ring {
+  width: 22px;
+  height: 22px;
+  background: color-mix(in srgb, var(--em-accent) 22%, transparent);
+}
+
+@media (hover: none), (pointer: coarse) {
+  .em-cursor {
+    display: none;
+  }
+}
+
+/* ── ASCII footer ──────────────────────────────────────── */
+.em-ascii-footer {
+  padding: 6rem 0 3.25rem;
+  overflow: hidden;
+}
+
+.em-ascii-stage {
+  position: relative;
+  width: 100%;
+  height: clamp(230px, 30vw, 460px);
+  isolation: isolate;
+}
+
+.em-ascii-stage::before {
+  content: '';
+  position: absolute;
+  inset: -12% -6%;
+  z-index: -1;
+  background: radial-gradient(
+      ellipse 55% 60% at 50% 50%,
+      rgba(0, 229, 255, 0.09),
+      transparent 70%
+    ),
+    radial-gradient(ellipse 40% 50% at 70% 60%, rgba(168, 85, 247, 0.07), transparent 70%);
+  pointer-events: none;
+}
+
+.em-ascii-stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.em-ascii-meta,
+.em-ascii-social {
+  font-family: var(--em-mono);
+}
+
+/* space-between left the nav off-centre whenever the two flanking labels had
+   different widths. Equal 1fr gutters put it on the container's true centre,
+   which is the same axis the social row centres on. */
+.em-ascii-meta {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+}
+
+.em-ascii-meta > span:first-child {
+  justify-self: start;
+}
+
+.em-ascii-meta > span:last-child {
+  justify-self: end;
+}
+
+.em-ascii-nav {
+  justify-self: center;
+}
+
+.em-ascii-social {
+  justify-content: center;
+}
+
+@media (max-width: 900px) {
+  .em-ascii-meta {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .em-ascii-meta > span:first-child,
+  .em-ascii-meta > span:last-child {
+    justify-self: center;
+  }
+}
+
+/* ── 404: same ASCII stage as the footer, occupying the page ── */
+body:has(.em-404) footer.em-ascii-footer {
+  display: none;
+}
+
+.em-404 {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(100svh - 5.5rem);
+  margin-top: 0;
+  padding: 7.5rem 0 3.25rem;
+  border-top: 0;
+}
+
+.em-404-kicker {
+  justify-content: center;
+  width: 100%;
+  margin: 0 0 0.75rem;
+}
+
+.em-404 .em-ascii-stage {
+  height: clamp(260px, 34vw, 520px);
+}
+
+.em-404-title {
+  margin: 1.5rem 0 0.55rem;
+  text-align: center;
+  font-size: clamp(1.6rem, 3.6vw, 2.75rem);
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.em-404-lede {
+  max-width: 42ch;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: rgba(var(--fg-rgb), 0.55);
+}
+
+.em-404-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+.em-404-actions .em-btn {
+  text-decoration: none;
+}
+
+/* ── Section eyebrow / serif accents ───────────────────── */
+.em-serif {
+  font-family: var(--em-serif);
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: -0.015em;
+}
+
+.em-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--em-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(var(--fg-rgb), 0.4);
+}
+
+.em-eyebrow::before {
+  content: '';
+  width: 28px;
+  height: 1px;
+  background: var(--em-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .em-kinetic-char {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .em-pixel-tiles {
+    display: none;
+  }
+
+  .em-pixel-media {
+    filter: none !important;
+  }
+
+  .em-ripple-layer {
+    display: none;
+  }
+
+  .em-hero-enter {
+    opacity: 1;
+    animation: none;
+  }
+}

@@ -1,41 +1,61 @@
 import { NextResponse } from 'next/server';
+import {
+  allowContactAttempt,
+  clientIp,
+  isTrustedOrigin,
+  parseContactBody,
+} from '@/lib/contact';
+
+export function GET() {
+  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
+}
 
 export async function POST(request: Request) {
+  if (!isTrustedOrigin(request)) {
+    return NextResponse.json({ error: 'Solicitud rechazada.' }, { status: 403 });
+  }
+
+  if (!allowContactAttempt(clientIp(request))) {
+    return NextResponse.json(
+      { error: 'Demasiados intentos. Espera unos minutos o escríbenos por WhatsApp.' },
+      { status: 429 }
+    );
+  }
+
+  let raw: unknown;
   try {
-    const body = await request.json();
-    const { nombre, email, telefono, servicio, presupuesto, descripcion } = body;
+    raw = await request.json();
+  } catch {
+    return NextResponse.json({ error: 'Solicitud inválida.' }, { status: 400 });
+  }
 
-    // Validate required fields
-    if (!nombre || !email || !servicio || !descripcion) {
-      return NextResponse.json(
-        { error: 'Faltan campos requeridos.' },
-        { status: 400 }
-      );
-    }
+  const parsed = parseContactBody(raw);
+  if (!parsed.ok) {
+    return NextResponse.json({ error: parsed.error }, { status: 400 });
+  }
 
-    // Submit to Web3Forms (Envía los correos a: elite.compainsv@gmail.com)
-    // Para que funcione, debes crear tu Access Key en https://web3forms.com con ese correo
-    // y agregarla como variable de entorno WEB3FORMS_KEY en Vercel.
-    if (!process.env.WEB3FORMS_KEY || process.env.WEB3FORMS_KEY === 'YOUR_ACCESS_KEY_HERE') {
-      console.error('ERROR: WEB3FORMS_KEY no detectada. Verifica en Vercel -> Settings -> Environment Variables.');
-      return NextResponse.json(
-        { error: 'Error de configuración: La clave WEB3FORMS_KEY no está presente en el servidor.' },
-        { status: 500 }
-      );
-    }
+  if (parsed.data.trap) {
+    return NextResponse.json({ success: true });
+  }
 
-    // Submit to Web3Forms
+  const key = process.env.WEB3FORMS_KEY;
+  if (!key || key === 'YOUR_ACCESS_KEY_HERE') {
+    console.error('WEB3FORMS_KEY missing');
+    return NextResponse.json({ error: 'No pudimos enviar el formulario.' }, { status: 500 });
+  }
+
+  const { nombre, email, telefono, servicio, presupuesto, descripcion } = parsed.data;
+
+  try {
     const web3Response = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        access_key: process.env.WEB3FORMS_KEY,
+        access_key: key,
         subject: `Nueva Cotización: ${servicio} — ${nombre}`,
         from_name: 'Elite Motion Website',
         replyto: email,
-        // Algunos planes de Web3Forms requieren el campo 'message' como obligatorio
-        message: `Cliente: ${nombre}\nServicio: ${servicio}\nPresupuesto: ${presupuesto}\nDescripción: ${descripcion}`,
-        // Campos individuales para la tabla organizada
+        message: `Cliente: ${nombre}\nServicio: ${servicio}\nPresupuesto: ${presupuesto || 'No indicado'}\nDescripción: ${descripcion}`,
         nombre,
         email,
         telefono: telefono || 'No indicado',
@@ -45,17 +65,14 @@ export async function POST(request: Request) {
       }),
     });
 
-    const data = await web3Response.json();
+    const data = (await web3Response.json()) as { success?: boolean };
 
     if (data.success) {
       return NextResponse.json({ success: true });
-    } else {
-      console.error('Web3Forms Error:', data); // Esto aparecerá en los logs de Vercel
-      return NextResponse.json(
-        { error: data.message || 'Error al enviar el formulario.' },
-        { status: web3Response.status }
-      );
     }
+
+    console.error('Web3Forms rejected the submission');
+    return NextResponse.json({ error: 'No pudimos enviar el formulario.' }, { status: 502 });
   } catch {
     return NextResponse.json(
       { error: 'Error del servidor. Intenta de nuevo más tarde.' },

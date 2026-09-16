@@ -1,11 +1,19 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import { headers } from "next/headers";
 import "./globals.css";
+import "./magic.css";
+import "./gallery.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SecurityProvider from "@/components/SecurityProvider";
+import LogoIntro from "@/components/LogoIntro";
+import GridBackground from "@/components/GridBackground";
+import SmoothCursor from "@/components/ui/SmoothCursor";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://elitemotionsv.com"),
+
   title: {
     default: "Elite Motion",
     template: "%s | Elite Motion",
@@ -89,19 +97,30 @@ export const metadata: Metadata = {
 export const viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const nonce = (await headers()).get("x-nonce") ?? "";
+
   return (
-    <html lang="es">
+    <html lang="es" suppressHydrationWarning>
+      <head>
+        {/* Decides the intro before first paint: repeat visitors and
+            reduced-motion users must never see the overlay flash. */}
+        <script
+          nonce={nonce}
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('em-theme');if(t!=='light'&&t!=='dark')t='dark';document.documentElement.setAttribute('data-theme',t);var skip=sessionStorage.getItem('em-logo-intro')||matchMedia('(prefers-reduced-motion: reduce)').matches;document.documentElement.classList.add(skip?'em-intro-skip':'em-intro-lock')}catch(e){document.documentElement.setAttribute('data-theme','dark');document.documentElement.classList.add('em-intro-skip')}})()`,
+          }}
+        />
+      </head>
       <body>
-        <Script id="fb-pixel" strategy="afterInteractive">
+        <Script id="fb-pixel" strategy="afterInteractive" nonce={nonce}>
           {`
             !function(f,b,e,v,n,t,s)
             {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -123,25 +142,15 @@ export default function RootLayout({
             src="https://www.facebook.com/tr?id=961246403321583&ev=PageView&noscript=1"
           />
         </noscript>
-        {/* Background gradient effect */}
         <div className="bg-gradient" />
+        <GridBackground />
+        <LogoIntro />
+
+        <SmoothCursor />
 
         <SecurityProvider>
-          {/* Global Navbar */}
           <Navbar />
-
-          {/* Page content */}
-          <main
-            style={{
-              minHeight: "100vh",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            {children}
-          </main>
-
-          {/* Global Footer */}
+          <main className="em-main">{children}</main>
           <Footer />
         </SecurityProvider>
       </body>

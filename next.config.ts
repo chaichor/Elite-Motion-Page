@@ -1,6 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
+  experimental: {
+    viewTransition: true,
+  },
+  images: {
+    qualities: [70, 75],
+  },
   async headers() {
     return [
       {
@@ -20,7 +27,11 @@ const nextConfig: NextConfig = {
           },
           {
             key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=()',
+            value: 'camera=(), microphone=(), geolocation=(), usb=()',
+          },
+          {
+            key: 'X-DNS-Prefetch-Control',
+            value: 'off',
           },
         ],
       },
