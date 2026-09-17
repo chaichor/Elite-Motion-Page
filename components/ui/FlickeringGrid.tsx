@@ -62,7 +62,7 @@ export default function FlickeringGrid({
       const { width, height } = host.getBoundingClientRect();
       if (!width || !height) return;
 
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      dpr = Math.min(window.devicePixelRatio || 1, 1.25);
       canvas.width = Math.floor(width * dpr);
       canvas.height = Math.floor(height * dpr);
       canvas.style.width = `${width}px`;
@@ -77,10 +77,14 @@ export default function FlickeringGrid({
     };
 
     const draw = (now: number) => {
+      if (!visible) {
+        frame = 0;
+        return;
+      }
       frame = requestAnimationFrame(draw);
-      const delta = Math.min((now - last) / 1000, 0.1);
+      if (now - last < 80) return;
+      const delta = Math.min((now - last) / 1000, 0.12);
       last = now;
-      if (!visible || !squares.length) return;
 
       for (let i = 0; i < squares.length; i++) {
         if (Math.random() < flickerChance * delta) {
@@ -89,11 +93,12 @@ export default function FlickeringGrid({
       }
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = `rgba(${rgb}, 1)`;
       for (let x = 0; x < cols; x++) {
         for (let y = 0; y < rows; y++) {
           const opacity = squares[x * rows + y];
-          if (opacity < 0.012) continue;
-          ctx.fillStyle = `rgba(${rgb}, ${opacity})`;
+          if (opacity < 0.02) continue;
+          ctx.globalAlpha = opacity;
           ctx.fillRect(
             x * step * dpr,
             y * step * dpr,
@@ -102,6 +107,7 @@ export default function FlickeringGrid({
           );
         }
       }
+      ctx.globalAlpha = 1;
     };
 
     resize();
@@ -113,6 +119,10 @@ export default function FlickeringGrid({
     const io = new IntersectionObserver(
       ([entry]) => {
         visible = entry.isIntersecting;
+        if (visible && !frame) {
+          last = performance.now();
+          frame = requestAnimationFrame(draw);
+        }
       },
       { threshold: 0 }
     );

@@ -26,6 +26,8 @@
   height: 100%;
   --em-cl-x: 0px;
   --em-cl-y: 0px;
+  transform: translate3d(var(--em-cl-x), var(--em-cl-y), 0);
+  contain: layout style;
 }
 
 .em-cluster-tile {
@@ -33,15 +35,6 @@
   margin: 0;
   overflow: hidden;
   background: var(--bg-tertiary);
-  /* No transition here: the parallax offset is already eased in JS, and a
-     transition on top of a per-frame write would only add lag. */
-  transform: translate3d(
-    calc(var(--em-cl-x) * var(--em-depth)),
-    calc(var(--em-cl-y) * var(--em-depth)),
-    0
-  );
-  transition: opacity 0.5s ease, filter 0.5s ease;
-  will-change: transform;
 }
 
 .em-work-frame::after,
@@ -54,44 +47,16 @@
 }
 
 .em-cluster-tile[data-dim='true'] {
-  opacity: 0.28;
-  filter: grayscale(1);
+  opacity: 0.38;
 }
 
 .em-cluster-img {
   object-fit: cover;
-  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .em-cluster-tile[data-active='true'] .em-cluster-img {
-  transform: scale(1.07);
-}
-
-.em-cluster-img.is-in {
-  animation-name: emClusterIn;
-  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-  animation-fill-mode: both;
-}
-
-.em-cluster-img.is-out {
-  animation: emClusterOut 480ms ease both;
-}
-
-@keyframes emClusterIn {
-  from {
-    opacity: 0;
-    clip-path: inset(0 0 100% 0);
-  }
-  to {
-    opacity: 1;
-    clip-path: inset(0 0 0 0);
-  }
-}
-
-@keyframes emClusterOut {
-  to {
-    opacity: 0;
-  }
+  transform: scale(1.04);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ── Home hero built around the cluster ────────────────── */
@@ -723,6 +688,10 @@ html.em-viewer-open body {
   .em-cluster-img.is-out {
     animation: none !important;
     transition: none !important;
+  }
+
+  .em-cluster {
+    transform: none !important;
   }
 
   .em-cluster-tile {
@@ -2128,20 +2097,18 @@ html.em-lite .em-index-link:focus-visible .portfolio-bg-media {
   transform: none;
 }
 
+html.em-lite .em-cluster {
+  transform: none;
+}
+
 html.em-lite .em-cluster-tile {
-  will-change: auto;
   transform: none;
 }
 
 html.em-lite .em-cluster-img,
-html.em-lite .em-cluster-img.is-in,
-html.em-lite .em-cluster-img.is-out {
-  animation: emClusterFade 0.45s ease both;
-  transform: none !important;
-}
-
 html.em-lite .em-cluster-tile[data-active='true'] .em-cluster-img {
-  transform: none;
+  transform: none !important;
+  animation: none;
 }
 
 html.em-lite .em-bar,

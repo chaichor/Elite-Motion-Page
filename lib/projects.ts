@@ -259,26 +259,23 @@ export function coverStill(project: Project): Media | null {
   return project.media.find((item) => item.kind === 'image') ?? null;
 }
 
-const HOME_SLUGS = ['jalisco', 'yaxhe', 'zepeda', 'andybeauty'] as const;
+const HOME_SLUGS = ['jalisco', 'andybeauty', 'yaxhe', 'zepeda'] as const;
 
 /** Featured on the home index — the rest live on /portafolio. */
 export const homeProjects = HOME_SLUGS.map(
   (slug) => projects.find((project) => project.slug === slug)!
 ).filter(Boolean);
 
-/** Stills only — keep the collage light: skip RAW session files and cap each project. */
+/** Stills the hero collage can actually decode. Skip hashed filenames
+ *  (`#` → unoptimized 8–11MB originals) and cap each project. */
 export const clusterStills = homeProjects.flatMap((project) => {
-  const images = project.media.filter((item) => item.kind === 'image');
-  const picked =
-    project.slug === 'zepeda'
-      ? images.slice(0, 2)
-      : project.slug === 'jalisco'
-        ? images.filter((item) => item.src.includes('artes_y_historias')).slice(0, 5)
-        : project.slug === 'andybeauty'
-          ? images.filter((item) => item.src.includes('img_portafolio/andybeauty')).slice(0, 4)
-          : images.slice(0, 4);
+  const images = project.media.filter(
+    (item) => item.kind === 'image' && !item.src.includes('%23')
+  );
+  const cap =
+    project.slug === 'andybeauty' ? 3 : project.slug === 'yaxhe' ? 3 : 2;
 
-  return picked.map((item) => ({
+  return images.slice(0, cap).map((item) => ({
     src: item.src,
     title: project.title,
     tag: project.category,

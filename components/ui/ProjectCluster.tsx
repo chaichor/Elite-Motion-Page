@@ -15,110 +15,48 @@ type Slot = {
   y: number;
   w: number;
   h: number;
-  /** 0 = far, 1 = near. Drives both stacking and parallax travel. */
   depth: number;
 };
 
-/** Hand-placed collage. Percentages of the cluster box, deliberately overlapping. */
+/** Cipher-like: fewer, larger overlapping frames — not a 15-cell mosaic. */
 const DESKTOP_SLOTS: Slot[] = [
-  { x: 2, y: 4, w: 15, h: 19, depth: 0.25 },
-  { x: 26, y: 2, w: 16, h: 32, depth: 0.35 },
-  { x: 40, y: 0, w: 20, h: 20, depth: 0.2 },
-  { x: 58, y: 3, w: 14, h: 29, depth: 0.45 },
-  { x: 14, y: 16, w: 18, h: 20, depth: 0.55 },
-  { x: 68, y: 14, w: 20, h: 21, depth: 0.3 },
-  { x: 4, y: 34, w: 17, h: 33, depth: 0.75 },
-  { x: 20, y: 40, w: 22, h: 21, depth: 0.9 },
-  { x: 60, y: 36, w: 18, h: 33, depth: 0.85 },
-  { x: 78, y: 40, w: 16, h: 18, depth: 0.5 },
-  { x: 10, y: 62, w: 20, h: 35, depth: 0.65 },
-  { x: 30, y: 66, w: 18, h: 19, depth: 1 },
-  { x: 46, y: 60, w: 16, h: 33, depth: 0.95 },
-  { x: 62, y: 66, w: 20, h: 19, depth: 0.7 },
-  { x: 80, y: 62, w: 17, h: 30, depth: 0.55 },
+  { x: 3, y: 6, w: 24, h: 38, depth: 0.28 },
+  { x: 26, y: 2, w: 20, h: 30, depth: 0.18 },
+  { x: 50, y: 8, w: 26, h: 34, depth: 0.42 },
+  { x: 74, y: 4, w: 22, h: 40, depth: 0.26 },
+  { x: 6, y: 48, w: 22, h: 44, depth: 0.62 },
+  { x: 30, y: 40, w: 28, h: 36, depth: 0.88 },
+  { x: 58, y: 46, w: 22, h: 42, depth: 0.74 },
+  { x: 78, y: 50, w: 19, h: 38, depth: 0.5 },
 ];
 
-/** Fewer, larger tiles on phones so Safari never holds 15–30 full-res stills. */
 const MOBILE_SLOTS: Slot[] = [
-  { x: 3, y: 4, w: 46, h: 38, depth: 0.4 },
-  { x: 52, y: 2, w: 45, h: 30, depth: 0.28 },
-  { x: 6, y: 40, w: 40, h: 34, depth: 0.7 },
-  { x: 50, y: 34, w: 47, h: 32, depth: 0.85 },
-  { x: 4, y: 72, w: 44, h: 26, depth: 0.5 },
-  { x: 52, y: 68, w: 44, h: 28, depth: 0.6 },
+  { x: 3, y: 4, w: 54, h: 44, depth: 0.4 },
+  { x: 52, y: 2, w: 45, h: 36, depth: 0.28 },
+  { x: 4, y: 50, w: 46, h: 46, depth: 0.7 },
+  { x: 52, y: 42, w: 46, h: 38, depth: 0.85 },
 ];
-
-const SWAP_MS = 480;
 
 interface ProjectClusterProps {
   items: ClusterItem[];
-  /** Fires as tiles are hovered so the page can print a readout. */
   onFocusItem?: (item: (ClusterItem & { index: number }) | null) => void;
 }
 
 /**
- * A shuffling collage of project stills. One tile swaps at a time rather than
- * the whole board, which keeps the motion alive without ever looking like a
- * slideshow, and keeps each frame's work to a single image transition.
- *
- * SSR and phones always start with the six-tile board so the first HTML never
- * asks a mobile browser to decode fifteen originals.
+ * Editorial stills collage. Cipher keeps a small set of already-sized frames
+ * on one transformed plane; we do the same: no per-tile will-change, no
+ * clip-path, no grayscale, and no perpetual rAF. Phones stay on four tiles.
  */
 export default function ProjectCluster({ items, onFocusItem }: ProjectClusterProps) {
   const hostRef = useRef<HTMLDivElement>(null);
   const [slots, setSlots] = useState<Slot[]>(MOBILE_SLOTS);
-  const [current, setCurrent] = useState<number[]>(() =>
-    MOBILE_SLOTS.map((_, i) => i % Math.max(items.length, 1))
-  );
-  const [previous, setPrevious] = useState<(number | null)[]>(() =>
-    MOBILE_SLOTS.map(() => null)
-  );
   const [active, setActive] = useState<number | null>(null);
+  const pool = items.slice(0, Math.max(slots.length, 1));
 
   useEffect(() => {
     if (isLiteMotion()) return;
-
     setSlots(DESKTOP_SLOTS);
-    setCurrent(DESKTOP_SLOTS.map((_, i) => i % Math.max(items.length, 1)));
-    setPrevious(DESKTOP_SLOTS.map(() => null));
-  }, [items.length]);
-
-  useEffect(() => {
-    if (items.length <= slots.length) return;
-    if (isLiteMotion()) return;
-
-    let tick = 0;
-    const id = window.setInterval(() => {
-      const slot = tick % slots.length;
-      tick++;
-
-      setCurrent((prevIndices) => {
-        const shown = new Set(prevIndices);
-        let next = (prevIndices[slot] + slots.length) % items.length;
-        while (shown.has(next)) next = (next + 1) % items.length;
-
-        const outgoing = prevIndices[slot];
-        setPrevious((p) => {
-          const copy = [...p];
-          copy[slot] = outgoing;
-          return copy;
-        });
-        window.setTimeout(() => {
-          setPrevious((p) => {
-            const copy = [...p];
-            copy[slot] = null;
-            return copy;
-          });
-        }, SWAP_MS + 40);
-
-        const copy = [...prevIndices];
-        copy[slot] = next;
-        return copy;
-      });
-    }, 1600);
-
-    return () => window.clearInterval(id);
-  }, [items.length, slots.length]);
+  }, []);
 
   useEffect(() => {
     const host = hostRef.current;
@@ -127,50 +65,84 @@ export default function ProjectCluster({ items, onFocusItem }: ProjectClusterPro
     if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
 
     let frame = 0;
+    let running = false;
+    let visible = true;
     const target = { x: 0, y: 0 };
     const eased = { x: 0, y: 0 };
+
+    const stop = () => {
+      if (!running) return;
+      running = false;
+      cancelAnimationFrame(frame);
+    };
+
+    const tick = () => {
+      eased.x += (target.x - eased.x) * 0.08;
+      eased.y += (target.y - eased.y) * 0.08;
+      host.style.setProperty('--em-cl-x', `${(-eased.x * 18).toFixed(1)}px`);
+      host.style.setProperty('--em-cl-y', `${(-eased.y * 12).toFixed(1)}px`);
+
+      if (Math.abs(target.x - eased.x) < 0.002 && Math.abs(target.y - eased.y) < 0.002) {
+        stop();
+        return;
+      }
+      frame = requestAnimationFrame(tick);
+    };
+
+    const start = () => {
+      if (running || !visible) return;
+      running = true;
+      frame = requestAnimationFrame(tick);
+    };
 
     const onMove = (e: PointerEvent) => {
       target.x = (e.clientX / window.innerWidth - 0.5) * 2;
       target.y = (e.clientY / window.innerHeight - 0.5) * 2;
+      start();
     };
 
-    const tick = () => {
-      eased.x += (target.x - eased.x) * 0.06;
-      eased.y += (target.y - eased.y) * 0.06;
-      host.style.setProperty('--em-cl-x', `${(-eased.x * 26).toFixed(2)}px`);
-      host.style.setProperty('--em-cl-y', `${(-eased.y * 18).toFixed(2)}px`);
-      frame = requestAnimationFrame(tick);
+    const onLeave = () => {
+      target.x = 0;
+      target.y = 0;
+      start();
     };
 
-    frame = requestAnimationFrame(tick);
     window.addEventListener('pointermove', onMove, { passive: true });
+    host.addEventListener('pointerleave', onLeave);
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting;
+        if (!visible) stop();
+      },
+      { threshold: 0 }
+    );
+    io.observe(host);
 
     return () => {
-      cancelAnimationFrame(frame);
+      stop();
+      io.disconnect();
       window.removeEventListener('pointermove', onMove);
+      host.removeEventListener('pointerleave', onLeave);
     };
   }, []);
 
   const focus = (slot: number | null) => {
     setActive(slot);
     if (!onFocusItem) return;
-    if (slot === null) {
+    if (slot === null || !pool[slot]) {
       onFocusItem(null);
       return;
     }
-    const index = current[slot];
-    onFocusItem({ ...items[index], index });
+    onFocusItem({ ...pool[slot], index: slot });
   };
 
-  if (!items.length) return null;
+  if (!pool.length) return null;
 
   return (
     <div ref={hostRef} className="em-cluster">
       {slots.map((slot, i) => {
-        const item = items[current[i] % items.length];
-        const prevIndex = previous[i];
-        const prevItem = prevIndex === null ? null : items[prevIndex % items.length];
+        const item = pool[i % pool.length];
         const isActive = active === i;
 
         return (
@@ -185,36 +157,20 @@ export default function ProjectCluster({ items, onFocusItem }: ProjectClusterPro
               width: `${slot.w}%`,
               height: `${slot.h}%`,
               zIndex: isActive ? 40 : Math.round(slot.depth * 20) + 1,
-              ['--em-depth' as string]: slot.depth,
             }}
             onPointerEnter={() => focus(i)}
             onPointerLeave={() => focus(null)}
           >
-            {prevItem && (
-              <Image
-                key={`out-${prevItem.src}`}
-                src={prevItem.src}
-                alt=""
-                fill
-                sizes="(max-width: 768px) 46vw, 18vw"
-                quality={60}
-                className="em-cluster-img is-out"
-                unoptimized={prevItem.src.includes('%23')}
-                draggable={false}
-              />
-            )}
             <Image
-              key={`in-${item.src}`}
               src={item.src}
               alt={item.title}
               fill
-              sizes="(max-width: 768px) 46vw, 18vw"
-              quality={60}
-              priority={i < 3}
-              className="em-cluster-img is-in"
-              style={{ animationDuration: `${SWAP_MS}ms` }}
+              sizes="(max-width: 768px) 54vw, 22vw"
+              quality={55}
+              priority={i < 2}
+              loading={i < 2 ? undefined : 'lazy'}
+              className="em-cluster-img"
               draggable={false}
-              unoptimized={item.src.includes('%23')}
             />
           </figure>
         );

@@ -10,12 +10,12 @@ function nonceValue() {
 function csp(nonce: string, dev: boolean) {
   return [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://connect.facebook.net${dev ? " 'unsafe-eval'" : ''}`,
+    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://connect.facebook.net https://va.vercel-scripts.com${dev ? " 'unsafe-eval'" : ''}`,
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "img-src 'self' data: blob: https://www.facebook.com",
     "font-src 'self' data: https://fonts.gstatic.com",
     "media-src 'self' blob:",
-    `connect-src 'self' https://api.web3forms.com https://www.facebook.com https://connect.facebook.net${dev ? ' ws: wss:' : ''}`,
+    `connect-src 'self' https://api.web3forms.com https://vitals.vercel-insights.com https://www.facebook.com https://connect.facebook.net${dev ? ' ws: wss:' : ''}`,
     "frame-src 'self' https://www.facebook.com https://connect.facebook.net",
     "worker-src 'self' blob:",
     "object-src 'none'",

@@ -10,6 +10,7 @@ import SecurityProvider from "@/components/SecurityProvider";
 import LogoIntro from "@/components/LogoIntro";
 import GridBackground from "@/components/GridBackground";
 import SmoothCursor from "@/components/ui/SmoothCursor";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://elitemotionsv.com"),
@@ -154,6 +155,7 @@ export default async function RootLayout({
           <main className="em-main">{children}</main>
           <Footer />
         </SecurityProvider>
+        <SpeedInsights />
       </body>
     </html>
   );

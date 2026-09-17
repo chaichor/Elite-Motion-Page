@@ -194,7 +194,7 @@ export default function HomePageClient() {
       <section ref={heroRef} className="em-hero em-hero-cluster">
         <div className="em-hero-bg">
           <div className="em-flicker-host">
-            <FlickeringGrid squareSize={3} gridGap={7} flickerChance={0.42} maxOpacity={0.22} />
+            <FlickeringGrid squareSize={6} gridGap={16} flickerChance={0.14} maxOpacity={0.16} />
           </div>
         </div>
 
