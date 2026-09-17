@@ -171,7 +171,7 @@ export default function ContactForm({ accessKey }: Props) {
             tabIndex={-1}
             autoComplete="off"
             aria-hidden="true"
-            style={{ position: 'absolute', left: '-9999px', height: 0, width: 0, opacity: 0 }}
+            className="em-quote-trap"
           />
 
           <label>

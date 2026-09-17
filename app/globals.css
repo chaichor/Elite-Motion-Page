@@ -966,6 +966,8 @@ canvas {
 .em-quote {
   padding-top: 8rem;
   padding-bottom: 5rem;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .em-quote-layout {
@@ -973,13 +975,21 @@ canvas {
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
   gap: 3.5rem;
   align-items: start;
+  min-width: 0;
+}
+
+.em-quote-layout > * {
+  min-width: 0;
+  max-width: 100%;
 }
 
 .em-quote h1 {
   font-family: var(--em-ff);
-  font-size: clamp(3rem, 8vw, 6.2rem);
+  font-size: clamp(2.6rem, 8vw, 6.2rem);
   letter-spacing: -0.045em;
   line-height: 0.9;
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 
 .em-quote-lead {
@@ -995,11 +1005,17 @@ canvas {
 
 .em-quote-step {
   display: grid;
-  grid-template-columns: 3.2rem 1fr;
+  grid-template-columns: 3.2rem minmax(0, 1fr);
   gap: 0.75rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid rgba(var(--fg-rgb), 0.08);
   font-family: var(--em-ff);
+  min-width: 0;
+}
+
+.em-quote-step span {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .em-quote-step b {
@@ -1008,8 +1024,22 @@ canvas {
 }
 
 .em-quote-form {
+  position: relative;
   display: grid;
   gap: 1.35rem;
+  min-width: 0;
+}
+
+.em-quote-trap {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .em-quote-form label {
@@ -1020,11 +1050,14 @@ canvas {
   text-transform: uppercase;
   color: rgba(var(--fg-rgb), 0.48);
   font-family: var(--em-ff);
+  min-width: 0;
 }
 
 .em-quote-form input,
 .em-quote-form textarea {
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   background: transparent;
   border: 0;
   border-bottom: 1px solid rgba(var(--fg-rgb), 0.16);
@@ -1050,6 +1083,7 @@ canvas {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
+  min-width: 0;
 }
 
 .em-svc {
@@ -1060,8 +1094,12 @@ canvas {
   color: rgba(var(--fg-rgb), 0.65);
   font-family: var(--em-ff);
   font-size: 0.78rem;
+  line-height: 1.3;
   cursor: pointer;
   border-radius: 10px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
   transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
 }
 
@@ -1083,6 +1121,8 @@ canvas {
 .em-quote-form fieldset {
   border: 0;
   padding: 0;
+  min-width: 0;
+  max-width: 100%;
   display: grid;
   gap: 0.6rem;
 }
@@ -1122,6 +1162,10 @@ canvas {
   color: #fca5a5;
   border-left: 1px solid rgba(239, 68, 68, 0.5);
   padding-left: 0.85rem;
+}
+
+.em-quote .em-btn {
+  max-width: 100%;
 }
 
 .em-quote-form button[type='submit'] {
@@ -1171,6 +1215,19 @@ canvas {
     grid-template-columns: 1fr;
     gap: 2rem;
   }
+
+  .em-quote .em-btn,
+  .em-quote-form button[type='submit'] {
+    width: 100%;
+    justify-self: stretch;
+    white-space: normal;
+    text-align: center;
+    letter-spacing: 0.08em;
+    font-size: 0.72rem;
+    line-height: 1.25;
+    padding: 0.85rem 1rem;
+  }
+
   .em-gallery {
     grid-auto-rows: 36vw;
   }
@@ -1892,7 +1949,24 @@ canvas {
   .hero-orb-1, .hero-orb-2 { display: none; }
   .hero-grid-lines { display: none; }
 
-  /* Buttons */
+  /* Quote / cotizar */
+  .container.em-quote {
+    max-width: 100%;
+  }
+
+  .em-quote {
+    padding-top: 6.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .em-quote h1 {
+    font-size: clamp(2.35rem, 11vw, 3.1rem);
+  }
+
+  .em-quote .em-kinetic-word {
+    white-space: normal;
+  }
+
   .em-hero-btns { flex-direction: column; width: 100%; max-width: 340px; }
   .em-hero-btns .em-btn,
   .em-cta-btns .em-btn {
