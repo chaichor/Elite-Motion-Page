@@ -51,6 +51,41 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: 'andybeauty',
+    title: 'Andy Beauty',
+    client: 'Andy Beauty',
+    category: 'Belleza & Marca',
+    year: '2026',
+    summary:
+      'Expediente visual para un estudio de belleza: retrato de marca en el local, piezas de feed e historias y un video vertical listo para publicar. El servicio, el espacio y la dueña se leen como una sola marca.',
+    services: ['Retrato de marca', 'Diseño de piezas', 'Historias', 'Video vertical'],
+    cover: img(
+      '/img_portafolio/andybeauty/_DSC6890.jpg',
+      'Andy Beauty — retrato de marca',
+      0.667
+    ),
+    media: [
+      img('/img_portafolio/andybeauty/_DSC6890.jpg', 'Andy Beauty — retrato 01', 0.667),
+      img('/img_portafolio/andybeauty/_DSC6893.jpg', 'Andy Beauty — retrato 02', 0.667),
+      img('/img_portafolio/andybeauty/_DSC6900.jpg', 'Andy Beauty — retrato 03', 0.667),
+      img('/img_portafolio/andybeauty/_DSC6924.jpg', 'Andy Beauty — retrato 04', 0.64),
+      img('/img_portafolio/andybeauty/_DSC6926.jpg', 'Andy Beauty — retrato 05', 0.667),
+      img('/img_portafolio/andybeauty/_DSC6956.jpg', 'Andy Beauty — retrato 06', 0.667),
+      img('/img_portafolio/andybeauty/DSC_1155.jpg', 'Andy Beauty — estudio 01', 1.5),
+      img('/img_portafolio/andybeauty/_DSC6904.jpg', 'Andy Beauty — estudio 02', 1.5),
+      img('/img_portafolio/andybeauty/_DSC6930.jpg', 'Andy Beauty — estudio 03', 1.5),
+      img('/img_portafolio/andybeauty/_DSC6931.jpg', 'Andy Beauty — estudio 04', 1.5),
+      img('/img_portafolio/andybeauty/_DSC6934.jpg', 'Andy Beauty — estudio 05', 1.5),
+      img('/artes_y_historias/andybeauty/POST #1.jpg', 'Andy Beauty — post 01', 0.75),
+      img('/artes_y_historias/andybeauty/HISTORIA #1.jpg', 'Andy Beauty — historia 01', 0.5625),
+      img('/artes_y_historias/andybeauty/HISTORIA #2.jpg', 'Andy Beauty — historia 02', 0.5625),
+      vid(
+        '/videos_vertical_portafolio/videos_andybeauty/video 1 - andy beauty.mp4',
+        'Andy Beauty — video de marca'
+      ),
+    ],
+  },
+  {
     slug: 'jalisco',
     title: 'Taquería Jalisco',
     client: 'Taquería Jalisco',
@@ -224,7 +259,7 @@ export function coverStill(project: Project): Media | null {
   return project.media.find((item) => item.kind === 'image') ?? null;
 }
 
-const HOME_SLUGS = ['jalisco', 'yaxhe', 'zepeda'] as const;
+const HOME_SLUGS = ['jalisco', 'yaxhe', 'zepeda', 'andybeauty'] as const;
 
 /** Featured on the home index — the rest live on /portafolio. */
 export const homeProjects = HOME_SLUGS.map(
@@ -239,7 +274,9 @@ export const clusterStills = homeProjects.flatMap((project) => {
       ? images.slice(0, 2)
       : project.slug === 'jalisco'
         ? images.filter((item) => item.src.includes('artes_y_historias')).slice(0, 5)
-        : images.slice(0, 4);
+        : project.slug === 'andybeauty'
+          ? images.filter((item) => item.src.includes('img_portafolio/andybeauty')).slice(0, 4)
+          : images.slice(0, 4);
 
   return picked.map((item) => ({
     src: item.src,
