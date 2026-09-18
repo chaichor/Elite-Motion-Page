@@ -71,7 +71,7 @@ const redesPlans = [
   {
     id: 'inicial',
     name: 'Inicial',
-    price: 150,
+    price: 180,
     badge: null,
     oldPrice: null,
     features: {
@@ -87,13 +87,13 @@ const redesPlans = [
       Correcciones: '1 sencilla',
       'Estrategia de contenido + guión': true,
       'Entrega lista para publicar': true,
-      'Manejo de cuentas (Facebook, Instagram, TikTok)': false,
+      'Manejo de cuentas (Facebook, Instagram, TikTok)': 'Incluido',
     },
   },
   {
     id: 'pro-redes',
     name: 'Pro',
-    price: 300,
+    price: 330,
     badge: 'Buena opción',
     oldPrice: null,
     features: {
@@ -109,15 +109,15 @@ const redesPlans = [
       Correcciones: '2',
       'Estrategia de contenido + guión': true,
       'Entrega lista para publicar': true,
-      'Manejo de cuentas (Facebook, Instagram, TikTok)': false,
+      'Manejo de cuentas (Facebook, Instagram, TikTok)': 'Incluido',
     },
   },
   {
     id: 'elite-redes',
     name: 'Elite',
-    price: 450,
+    price: 480,
     badge: 'Premium',
-    oldPrice: 500,
+    oldPrice: 530,
     features: {
       Grabación: 'Profesional HD',
       'Videos cortos para redes': '10 videos',
@@ -131,7 +131,7 @@ const redesPlans = [
       Correcciones: '3',
       'Estrategia de contenido + guión': true,
       'Entrega lista para publicar': true,
-      'Manejo de cuentas (Facebook, Instagram, TikTok)': 'Gratis',
+      'Manejo de cuentas (Facebook, Instagram, TikTok)': 'Incluido',
     },
   },
 ];
@@ -196,7 +196,7 @@ const artesPlans = [
   {
     id: 'artes-pro',
     name: 'Pro',
-    price: 120,
+    price: 135,
     badge: 'Buena opción',
     oldPrice: null,
     features: {
@@ -213,7 +213,7 @@ const artesPlans = [
   {
     id: 'artes-elite',
     name: 'Elite',
-    price: 200,
+    price: 210,
     badge: 'Premium',
     oldPrice: null,
     features: {
@@ -249,7 +249,7 @@ const videosPlans = [
   {
     id: 'videos-pro',
     name: 'Pro',
-    price: 240,
+    price: 270,
     badge: 'Buena opción',
     oldPrice: null,
     features: {
@@ -265,7 +265,7 @@ const videosPlans = [
   {
     id: 'videos-elite',
     name: 'Elite',
-    price: 350,
+    price: 430,
     badge: 'Premium',
     oldPrice: null,
     features: {
@@ -331,6 +331,105 @@ const dronPlans = [
   },
 ];
 
+const comboPlans = [
+  {
+    id: 'combo-basico',
+    name: 'Básico',
+    price: 199,
+    badge: null,
+    oldPrice: 210,
+    tagline: 'Ahorra grabando video y fotos en la misma sesión.',
+    features: {
+      Incluye: 'Video Básico + Artes Básico',
+      'Videos cortos': '5 videos',
+      Edición: 'Básica',
+      'Posts para feed': '3 posts',
+      Historias: '2 historias',
+      Carruseles: false,
+      'Sesión de fotos producto/local': false,
+      Grabación: 'Profesional HD',
+      'Entrega lista para publicar': true,
+    },
+  },
+  {
+    id: 'combo-pro',
+    name: 'Pro',
+    price: 375,
+    badge: 'Buena opción',
+    oldPrice: 405,
+    tagline: 'Ahorra grabando video y fotos en la misma sesión.',
+    features: {
+      Incluye: 'Video Pro + Artes Pro',
+      'Videos cortos': '10 videos',
+      Edición: 'Pro',
+      'Posts para feed': '5 posts',
+      Historias: '3 historias',
+      Carruseles: '1 carrusel',
+      'Sesión de fotos producto/local': true,
+      Grabación: 'Profesional HD',
+      'Entrega lista para publicar': true,
+    },
+  },
+  {
+    id: 'combo-elite',
+    name: 'Elite',
+    price: 590,
+    badge: 'Premium',
+    oldPrice: 640,
+    tagline: 'Ahorra grabando video y fotos en la misma sesión.',
+    features: {
+      Incluye: 'Video Elite + Artes Elite',
+      'Videos cortos': '16 videos',
+      Edición: 'Premium',
+      'Posts para feed': '8 posts',
+      Historias: '5 historias',
+      Carruseles: '4 carruseles',
+      'Sesión de fotos producto/local': true,
+      Grabación: 'Profesional HD',
+      'Entrega lista para publicar': true,
+    },
+  },
+];
+
+const plan3mPlans = [
+  {
+    id: 'plan3m-video-pro',
+    name: 'Video Pro 3M',
+    price: 810,
+    badge: 'Ejemplo',
+    oldPrice: null,
+    period: 'total · 3 meses',
+    tagline: '$270 al mes. $770 si pagas el trimestre adelantado.',
+    features: {
+      'Equivale a': 'Paquete Video Pro, 3 meses',
+      'Facturación mensual': '$270 × 3',
+      'Total del plan': '$810',
+      'Pago adelantado (−5%)': '$770',
+      'Reporte de métricas': 'Al cierre del mes 3',
+      'Precio congelado': true,
+      'Prioridad de agenda': true,
+    },
+  },
+  {
+    id: 'plan3m-combo-pro',
+    name: 'Combo Pro 3M',
+    price: 1125,
+    badge: 'Buena opción',
+    oldPrice: null,
+    period: 'total · 3 meses',
+    tagline: '$375 al mes. $1,069 si pagas el trimestre adelantado.',
+    features: {
+      'Equivale a': 'Combo Video Pro + Artes Pro, 3 meses',
+      'Facturación mensual': '$375 × 3',
+      'Total del plan': '$1,125',
+      'Pago adelantado (−5%)': '$1,069',
+      'Reporte de métricas': 'Al cierre del mes 3',
+      'Precio congelado': true,
+      'Prioridad de agenda': true,
+    },
+  },
+];
+
 const quoteServices = [
   {
     title: 'Producción Comercial',
@@ -355,8 +454,14 @@ type Plan = {
   price: number;
   badge: string | null;
   oldPrice?: number | null;
+  tagline?: string;
+  period?: string;
   features: Record<string, string | boolean>;
 };
+
+function money(n: number) {
+  return n.toLocaleString('en-US');
+}
 
 function PricingTable({ plans, notes }: { plans: Plan[]; notes?: string[] }) {
   const featureKeys = Object.keys(plans[0].features);
@@ -374,10 +479,12 @@ function PricingTable({ plans, notes }: { plans: Plan[]; notes?: string[] }) {
                   {plan.badge && <span className="em-price-badge">{plan.badge}</span>}
                   <p className="em-price-name">{plan.name}</p>
                   <p className="em-price-amount">
-                    {plan.oldPrice && <span className="em-price-old">${plan.oldPrice}</span>}
+                    {plan.oldPrice && <span className="em-price-old">${money(plan.oldPrice)}</span>}
                     <span className="em-price-currency">$</span>
-                    {plan.price}
+                    {money(plan.price)}
+                    {plan.period && <span className="em-price-period">{plan.period}</span>}
                   </p>
+                  {plan.tagline && <p className="em-price-tagline">{plan.tagline}</p>}
                   <RippleLink
                     href={WA}
                     external
@@ -414,7 +521,7 @@ function PricingTable({ plans, notes }: { plans: Plan[]; notes?: string[] }) {
                         </svg>
                       </span>
                     ) : (
-                      <span className={val === 'Gratis' ? 'em-price-gratis' : undefined}>{val as string}</span>
+                      <span className={val === 'Gratis' || val === 'Incluido' ? 'em-price-gratis' : undefined}>{val as string}</span>
                     )}
                   </td>
                 );
@@ -434,13 +541,15 @@ function PricingTable({ plans, notes }: { plans: Plan[]; notes?: string[] }) {
   );
 }
 
-type TabId = 'foto' | 'artes' | 'videos' | 'dron' | 'redes' | 'inmobiliario';
+type TabId = 'foto' | 'artes' | 'videos' | 'combos' | 'plan3m' | 'dron' | 'redes' | 'inmobiliario';
 
 const TABS: { id: TabId; label: string }[] = [
   { id: 'redes', label: 'Redes & contenido' },
   { id: 'foto', label: 'Sesiones de foto' },
   { id: 'artes', label: 'Creación de artes' },
   { id: 'videos', label: 'Creación de videos' },
+  { id: 'combos', label: 'Combos' },
+  { id: 'plan3m', label: 'Plan 3 meses' },
   { id: 'dron', label: 'Grabación con dron' },
   { id: 'inmobiliario', label: 'Inmobiliario' },
 ];
@@ -519,7 +628,7 @@ export default function Precios() {
             <HyperText
               as="p"
               className="em-price-sub"
-              text="Paquetes para marcas, restaurantes y negocios. Solo creación de contenido — el manejo de cuentas aplica costo aparte, excepto en Elite."
+              text="Paquetes para marcas, restaurantes y negocios. Incluyen creación de contenido y el manejo de cuentas en Facebook, Instagram y TikTok."
             />
           </div>
           <PricingTable
@@ -529,7 +638,7 @@ export default function Precios() {
               'El uso del dron depende de los permisos de la zona y espacio disponible.',
               'Si se requieren modelos se aplicará un cargo extra.',
               'El uso de IA para transiciones o animaciones aplica con cargo extra.',
-              'El manejo de cuentas gratuito en el paquete Elite aplica para Facebook, Instagram y TikTok.',
+              'El manejo de cuentas está incluido en todos los paquetes y aplica para Facebook, Instagram y TikTok.',
             ]}
           />
         </>
@@ -595,6 +704,51 @@ export default function Precios() {
               'Si se requieren modelos se aplicará un cargo extra.',
               'El uso de IA para transiciones o animaciones aplica con cargo extra.',
               'Los videos se entregan listos para publicar.',
+            ]}
+          />
+        </>
+      )}
+
+      {activeTab === 'combos' && (
+        <>
+          <div className="em-price-head">
+            <KineticText as="h2" className="em-price-title" text="Combos video + artes" highlight="video + artes" />
+            <HyperText
+              as="p"
+              className="em-price-sub"
+              text="Video y piezas gráficas en un solo paquete. Ahorras grabando video y fotos en la misma sesión."
+            />
+          </div>
+          <PricingTable
+            plans={comboPlans}
+            notes={[
+              'Combo Básico: Video Básico + Artes Básico (normalmente $210).',
+              'Combo Pro: Video Pro + Artes Pro (normalmente $405).',
+              'Combo Elite: Video Elite + Artes Elite (normalmente $640).',
+              'El precio se puede ver modificado dependiendo del lugar de grabación.',
+              'Si se requieren modelos se aplicará un cargo extra.',
+            ]}
+          />
+        </>
+      )}
+
+      {activeTab === 'plan3m' && (
+        <>
+          <div className="em-price-head">
+            <KineticText as="h2" className="em-price-title" text="Plan de 3 meses" highlight="3 meses" />
+            <HyperText
+              as="p"
+              className="em-price-sub"
+              text="El mismo precio mensual del paquete equivalente, facturado cada mes durante 3 meses. Precio congelado, prioridad de agenda y reporte de métricas al cierre del mes 3, sin costo extra. 5% de descuento solo si pagas el trimestre completo por adelantado."
+            />
+          </div>
+          <PricingTable
+            plans={plan3mPlans}
+            notes={[
+              'Aplica al paquete equivalente que elijas (videos, artes o combo).',
+              'Se factura cada mes durante 3 meses al precio vigente del paquete.',
+              'El 5% aplica únicamente al pago del trimestre completo por adelantado.',
+              'El reporte de métricas se entrega al cierre del mes 3.',
             ]}
           />
         </>

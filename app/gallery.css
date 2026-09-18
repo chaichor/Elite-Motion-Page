@@ -1006,6 +1006,32 @@ html.em-viewer-open body {
   margin: 0 0 1.25rem;
 }
 
+.em-price-period {
+  display: block;
+  margin-top: 0.45rem;
+  font-family: var(--em-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(var(--fg-rgb), 0.42);
+}
+
+.em-price-col[data-premium] .em-price-period {
+  color: rgba(17, 17, 17, 0.45);
+}
+
+.em-price-tagline {
+  max-width: 22ch;
+  margin: -0.65rem 0 1.15rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: rgba(var(--fg-rgb), 0.52);
+}
+
+.em-price-col[data-premium] .em-price-tagline {
+  color: rgba(17, 17, 17, 0.62);
+}
+
 .em-price-col[data-premium] .em-price-amount {
   color: #0a5f6b;
 }
