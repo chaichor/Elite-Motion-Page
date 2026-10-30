@@ -11,7 +11,7 @@ const inmobiliariosPlans = [
   {
     id: 'basico',
     name: 'Básico',
-    price: 180,
+    price: 200,
     badge: null,
     oldPrice: null,
     features: {
@@ -30,7 +30,7 @@ const inmobiliariosPlans = [
   {
     id: 'pro',
     name: 'Pro',
-    price: 300,
+    price: 350,
     badge: 'Buena opción',
     oldPrice: null,
     features: {
@@ -49,9 +49,9 @@ const inmobiliariosPlans = [
   {
     id: 'elite',
     name: 'Elite',
-    price: 500,
+    price: 699,
     badge: 'Premium',
-    oldPrice: 600,
+    oldPrice: null,
     features: {
       'Fotografías profesionales': '16 fotos',
       'Fotos aéreas con dron': '8 fotos',
@@ -71,7 +71,7 @@ const redesPlans = [
   {
     id: 'inicial',
     name: 'Inicial',
-    price: 180,
+    price: 230,
     badge: null,
     oldPrice: null,
     features: {
@@ -93,7 +93,7 @@ const redesPlans = [
   {
     id: 'pro-redes',
     name: 'Pro',
-    price: 330,
+    price: 350,
     badge: 'Buena opción',
     oldPrice: null,
     features: {
@@ -140,37 +140,40 @@ const fotoPlans = [
   {
     id: 'foto-basico',
     name: 'Básico',
-    price: 60,
+    price: 80,
     badge: null,
     oldPrice: null,
     features: {
       'Fotografías profesionales': '16 fotos',
       'Duración de sesión': '60 minutos',
       Edición: 'Básica HD',
+      Entrega: 'Digital',
     },
   },
   {
     id: 'foto-pro',
     name: 'Pro',
-    price: 80,
+    price: 100,
     badge: 'Buena opción',
     oldPrice: null,
     features: {
       'Fotografías profesionales': '25 fotos',
       'Duración de sesión': '1 hora 30 min',
       Edición: 'Avanzada',
+      Entrega: 'Digital',
     },
   },
   {
     id: 'foto-elite',
     name: 'Elite',
-    price: 120,
+    price: 130,
     badge: 'Premium',
-    oldPrice: 150,
+    oldPrice: null,
     features: {
       'Fotografías profesionales': '35 fotos',
       'Duración de sesión': '2 horas',
       Edición: 'Elite',
+      Entrega: 'Digital',
     },
   },
 ];
@@ -179,12 +182,12 @@ const artesPlans = [
   {
     id: 'artes-basico',
     name: 'Básico',
-    price: 60,
+    price: 100,
     badge: null,
     oldPrice: null,
     features: {
-      'Posts para feed': '3 posts',
-      Historias: '2 historias',
+      'Posts para feed': '4 posts',
+      Historias: '5 historias',
       Carruseles: false,
       'Sesión de fotos producto/local': false,
       Formatos: 'Feed + Stories',
@@ -196,12 +199,12 @@ const artesPlans = [
   {
     id: 'artes-pro',
     name: 'Pro',
-    price: 135,
+    price: 150,
     badge: 'Buena opción',
     oldPrice: null,
     features: {
-      'Posts para feed': '5 posts',
-      Historias: '3 historias',
+      'Posts para feed': '6 posts',
+      Historias: '8 historias',
       Carruseles: '1 carrusel',
       'Sesión de fotos producto/local': true,
       Formatos: 'Feed + Stories',
@@ -213,13 +216,13 @@ const artesPlans = [
   {
     id: 'artes-elite',
     name: 'Elite',
-    price: 210,
+    price: 250,
     badge: 'Premium',
     oldPrice: null,
     features: {
-      'Posts para feed': '8 posts',
-      Historias: '5 historias',
-      Carruseles: '4 carruseles',
+      'Posts para feed': '9 posts',
+      Historias: '12 historias',
+      Carruseles: '3 carruseles',
       'Sesión de fotos producto/local': true,
       Formatos: 'Feed + Stories',
       'Entrega lista para publicar': true,
@@ -233,11 +236,11 @@ const videosPlans = [
   {
     id: 'videos-basico',
     name: 'Básico',
-    price: 150,
+    price: 190,
     badge: null,
     oldPrice: null,
     features: {
-      'Videos cortos': '5 videos',
+      'Videos cortos': '6 videos',
       Edición: 'Básica',
       Grabación: 'Profesional HD',
       'Copys para videos': true,
@@ -249,7 +252,7 @@ const videosPlans = [
   {
     id: 'videos-pro',
     name: 'Pro',
-    price: 270,
+    price: 290,
     badge: 'Buena opción',
     oldPrice: null,
     features: {
@@ -265,7 +268,7 @@ const videosPlans = [
   {
     id: 'videos-elite',
     name: 'Elite',
-    price: 430,
+    price: 450,
     badge: 'Premium',
     oldPrice: null,
     features: {
@@ -284,7 +287,7 @@ const dronPlans = [
   {
     id: 'dron-basico',
     name: 'Básico',
-    price: 100,
+    price: 120,
     badge: null,
     oldPrice: null,
     features: {
@@ -300,7 +303,7 @@ const dronPlans = [
   {
     id: 'dron-pro',
     name: 'Pro',
-    price: 160,
+    price: 180,
     badge: 'Buena opción',
     oldPrice: null,
     features: {
@@ -316,7 +319,7 @@ const dronPlans = [
   {
     id: 'dron-elite',
     name: 'Elite',
-    price: 200,
+    price: 220,
     badge: 'Premium',
     oldPrice: null,
     features: {
@@ -335,16 +338,16 @@ const comboPlans = [
   {
     id: 'combo-basico',
     name: 'Básico',
-    price: 199,
+    price: 275,
     badge: null,
-    oldPrice: 210,
+    oldPrice: 290,
     tagline: 'Ahorra grabando video y fotos en la misma sesión.',
     features: {
       Incluye: 'Video Básico + Artes Básico',
-      'Videos cortos': '5 videos',
+      'Videos cortos': '6 videos',
       Edición: 'Básica',
-      'Posts para feed': '3 posts',
-      Historias: '2 historias',
+      'Posts para feed': '4 posts',
+      Historias: '5 historias',
       Carruseles: false,
       'Sesión de fotos producto/local': false,
       Grabación: 'Profesional HD',
@@ -354,16 +357,16 @@ const comboPlans = [
   {
     id: 'combo-pro',
     name: 'Pro',
-    price: 375,
+    price: 410,
     badge: 'Buena opción',
-    oldPrice: 405,
+    oldPrice: 440,
     tagline: 'Ahorra grabando video y fotos en la misma sesión.',
     features: {
       Incluye: 'Video Pro + Artes Pro',
       'Videos cortos': '10 videos',
       Edición: 'Pro',
-      'Posts para feed': '5 posts',
-      Historias: '3 historias',
+      'Posts para feed': '6 posts',
+      Historias: '8 historias',
       Carruseles: '1 carrusel',
       'Sesión de fotos producto/local': true,
       Grabación: 'Profesional HD',
@@ -373,17 +376,17 @@ const comboPlans = [
   {
     id: 'combo-elite',
     name: 'Elite',
-    price: 590,
+    price: 650,
     badge: 'Premium',
-    oldPrice: 640,
+    oldPrice: 700,
     tagline: 'Ahorra grabando video y fotos en la misma sesión.',
     features: {
       Incluye: 'Video Elite + Artes Elite',
       'Videos cortos': '16 videos',
       Edición: 'Premium',
-      'Posts para feed': '8 posts',
-      Historias: '5 historias',
-      Carruseles: '4 carruseles',
+      'Posts para feed': '9 posts',
+      Historias: '12 historias',
+      Carruseles: '3 carruseles',
       'Sesión de fotos producto/local': true,
       Grabación: 'Profesional HD',
       'Entrega lista para publicar': true,
@@ -395,16 +398,16 @@ const plan3mPlans = [
   {
     id: 'plan3m-video-pro',
     name: 'Video Pro 3M',
-    price: 810,
+    price: 870,
     badge: 'Ejemplo',
     oldPrice: null,
     period: 'total · 3 meses',
-    tagline: '$270 al mes. $770 si pagas el trimestre adelantado.',
+    tagline: '$290 al mes. $827 si pagas el trimestre adelantado.',
     features: {
       'Equivale a': 'Paquete Video Pro, 3 meses',
-      'Facturación mensual': '$270 × 3',
-      'Total del plan': '$810',
-      'Pago adelantado (−5%)': '$770',
+      'Facturación mensual': '$290 × 3',
+      'Total del plan': '$870',
+      'Pago adelantado (−5%)': '$827',
       'Reporte de métricas': 'Al cierre del mes 3',
       'Precio congelado': true,
       'Prioridad de agenda': true,
@@ -413,16 +416,16 @@ const plan3mPlans = [
   {
     id: 'plan3m-combo-pro',
     name: 'Combo Pro 3M',
-    price: 1125,
+    price: 1230,
     badge: 'Buena opción',
     oldPrice: null,
     period: 'total · 3 meses',
-    tagline: '$375 al mes. $1,069 si pagas el trimestre adelantado.',
+    tagline: '$410 al mes. $1,169 si pagas el trimestre adelantado.',
     features: {
       'Equivale a': 'Combo Video Pro + Artes Pro, 3 meses',
-      'Facturación mensual': '$375 × 3',
-      'Total del plan': '$1,125',
-      'Pago adelantado (−5%)': '$1,069',
+      'Facturación mensual': '$410 × 3',
+      'Total del plan': '$1,230',
+      'Pago adelantado (−5%)': '$1,169',
       'Reporte de métricas': 'Al cierre del mes 3',
       'Precio congelado': true,
       'Prioridad de agenda': true,
@@ -651,12 +654,13 @@ export default function Precios() {
             <HyperText
               as="p"
               className="em-price-sub"
-              text="Para marcas, productos, retratos y eventos. Imágenes que elevan tu presencia visual al siguiente nivel."
+              text="Para marcas, productos, retratos y eventos. Las fotos se entregan en digital."
             />
           </div>
           <PricingTable
             plans={fotoPlans}
             notes={[
+              'Las fotos se entregan en digital.',
               'El precio puede variar dependiendo del lugar de la sesión.',
               'El estudio fotográfico aplica costo aparte si se requiere.',
               'Si se requieren modelos se aplicará un cargo extra.',
@@ -722,9 +726,9 @@ export default function Precios() {
           <PricingTable
             plans={comboPlans}
             notes={[
-              'Combo Básico: Video Básico + Artes Básico (normalmente $210).',
-              'Combo Pro: Video Pro + Artes Pro (normalmente $405).',
-              'Combo Elite: Video Elite + Artes Elite (normalmente $640).',
+              'Combo Básico: Video Básico + Artes Básico (normalmente $290).',
+              'Combo Pro: Video Pro + Artes Pro (normalmente $440).',
+              'Combo Elite: Video Elite + Artes Elite (normalmente $700).',
               'El precio se puede ver modificado dependiendo del lugar de grabación.',
               'Si se requieren modelos se aplicará un cargo extra.',
             ]}
