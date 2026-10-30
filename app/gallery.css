@@ -266,6 +266,16 @@
   margin: 0;
 }
 
+.em-works-note {
+  max-width: 48ch;
+  margin: 0;
+  font-family: var(--em-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  line-height: 1.7;
+  color: rgba(var(--fg-rgb), 0.42);
+}
+
 .em-works-index {
   display: flex;
   flex-wrap: wrap;

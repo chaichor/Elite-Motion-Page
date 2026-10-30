@@ -88,6 +88,10 @@ export default function Portafolio() {
           text="Fotografía, video, dron y diseño para marcas que necesitan verse mejor de lo que la competencia se puede permitir."
         />
 
+        <p className="em-works-note">
+          Esta selección no está completa. Algunos videos pesan demasiado para la web; los omitimos para que la página cargue como debe.
+        </p>
+
         <div className="em-works-index">
           <span className="em-label">{pad(projects.length)} proyectos</span>
           <span className="em-label">
