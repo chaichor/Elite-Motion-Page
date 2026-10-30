@@ -15,6 +15,7 @@ const inmobiliariosPlans = [
     badge: null,
     oldPrice: null,
     features: {
+      'Parrilla de contenido mensual': '9 piezas.',
       'Fotografías profesionales': '6 fotos',
       'Fotos aéreas con dron': '2 fotos',
       'Videos cortos de la propiedad': '1 video',
@@ -34,6 +35,7 @@ const inmobiliariosPlans = [
     badge: 'Buena opción',
     oldPrice: null,
     features: {
+      'Parrilla de contenido mensual': '18 piezas.',
       'Fotografías profesionales': '12 fotos',
       'Fotos aéreas con dron': '4 fotos',
       'Videos cortos de la propiedad': '2 videos',
@@ -53,6 +55,7 @@ const inmobiliariosPlans = [
     badge: 'Premium',
     oldPrice: null,
     features: {
+      'Parrilla de contenido mensual': '28 piezas.',
       'Fotografías profesionales': '16 fotos',
       'Fotos aéreas con dron': '8 fotos',
       'Videos cortos de la propiedad': '4 videos',
@@ -75,11 +78,12 @@ const redesPlans = [
     badge: null,
     oldPrice: null,
     features: {
+      'Parrilla de contenido mensual': '9 piezas.',
       Grabación: 'Profesional HD',
       'Videos cortos para redes': '3 videos',
       'Sesión fotográfica': '(solo local)',
       Historias: '4 historias',
-      Carruseles: '2 carruseles',
+      Artes: '2 artes',
       'Copys para videos': true,
       'Calendarización recomendada': true,
       'Grabación con dron': false,
@@ -97,11 +101,12 @@ const redesPlans = [
     badge: 'Buena opción',
     oldPrice: null,
     features: {
+      'Parrilla de contenido mensual': '18 piezas.',
       Grabación: 'Profesional HD',
       'Videos cortos para redes': '6 videos',
       'Sesión fotográfica': '(incl. producto)',
       Historias: '6 historias',
-      Carruseles: '6 carruseles',
+      Artes: '6 artes',
       'Copys para videos': true,
       'Calendarización recomendada': true,
       'Grabación con dron': true,
@@ -119,11 +124,12 @@ const redesPlans = [
     badge: 'Premium',
     oldPrice: 530,
     features: {
+      'Parrilla de contenido mensual': '30 piezas.',
       Grabación: 'Profesional HD',
       'Videos cortos para redes': '10 videos',
       'Sesión fotográfica': '(incl. producto)',
       Historias: '12 historias',
-      Carruseles: '8 carruseles',
+      Artes: '8 artes',
       'Copys para videos': true,
       'Calendarización recomendada': true,
       'Grabación con dron': true,
@@ -186,6 +192,7 @@ const artesPlans = [
     badge: null,
     oldPrice: null,
     features: {
+      'Parrilla de contenido mensual': '9 piezas.',
       'Posts para feed': '4 posts',
       Historias: '5 historias',
       Carruseles: false,
@@ -203,6 +210,7 @@ const artesPlans = [
     badge: 'Buena opción',
     oldPrice: null,
     features: {
+      'Parrilla de contenido mensual': '15 piezas.',
       'Posts para feed': '6 posts',
       Historias: '8 historias',
       Carruseles: '1 carrusel',
@@ -220,6 +228,7 @@ const artesPlans = [
     badge: 'Premium',
     oldPrice: null,
     features: {
+      'Parrilla de contenido mensual': '24 piezas.',
       'Posts para feed': '9 posts',
       Historias: '12 historias',
       Carruseles: '3 carruseles',
@@ -240,6 +249,7 @@ const videosPlans = [
     badge: null,
     oldPrice: null,
     features: {
+      'Parrilla de contenido mensual': '6 piezas.',
       'Videos cortos': '6 videos',
       Edición: 'Básica',
       Grabación: 'Profesional HD',
@@ -256,6 +266,7 @@ const videosPlans = [
     badge: 'Buena opción',
     oldPrice: null,
     features: {
+      'Parrilla de contenido mensual': '10 piezas.',
       'Videos cortos': '10 videos',
       Edición: 'Pro',
       Grabación: 'Profesional HD',
@@ -272,6 +283,7 @@ const videosPlans = [
     badge: 'Premium',
     oldPrice: null,
     features: {
+      'Parrilla de contenido mensual': '16 piezas.',
       'Videos cortos': '16 videos',
       Edición: 'Premium',
       Grabación: 'Profesional HD',
@@ -291,6 +303,7 @@ const dronPlans = [
     badge: null,
     oldPrice: null,
     features: {
+      'Parrilla de contenido mensual': 'Fotos y video aéreo.',
       'Tiempo de vuelo': '30 minutos',
       Equipo: 'DJI estabilizado',
       FPV: false,
@@ -307,6 +320,7 @@ const dronPlans = [
     badge: 'Buena opción',
     oldPrice: null,
     features: {
+      'Parrilla de contenido mensual': 'Fotos y video aéreo.',
       'Tiempo de vuelo': '1 hora',
       Equipo: 'DJI estabilizado / FPV',
       FPV: true,
@@ -323,6 +337,7 @@ const dronPlans = [
     badge: 'Premium',
     oldPrice: null,
     features: {
+      'Parrilla de contenido mensual': 'Fotos y video aéreo.',
       'Tiempo de vuelo': '2 horas',
       Equipo: 'DJI estabilizado / FPV',
       FPV: true,
@@ -343,6 +358,7 @@ const comboPlans = [
     oldPrice: 290,
     tagline: 'Ahorra grabando video y fotos en la misma sesión.',
     features: {
+      'Parrilla de contenido mensual': '15 piezas.',
       Incluye: 'Video Básico + Artes Básico',
       'Videos cortos': '6 videos',
       Edición: 'Básica',
@@ -362,6 +378,7 @@ const comboPlans = [
     oldPrice: 440,
     tagline: 'Ahorra grabando video y fotos en la misma sesión.',
     features: {
+      'Parrilla de contenido mensual': '25 piezas.',
       Incluye: 'Video Pro + Artes Pro',
       'Videos cortos': '10 videos',
       Edición: 'Pro',
@@ -381,6 +398,7 @@ const comboPlans = [
     oldPrice: 700,
     tagline: 'Ahorra grabando video y fotos en la misma sesión.',
     features: {
+      'Parrilla de contenido mensual': '40 piezas.',
       Incluye: 'Video Elite + Artes Elite',
       'Videos cortos': '16 videos',
       Edición: 'Premium',
@@ -404,6 +422,7 @@ const plan3mPlans = [
     period: 'total · 3 meses',
     tagline: '$290 al mes. $827 si pagas el trimestre adelantado.',
     features: {
+      'Parrilla de contenido mensual': '10 piezas.',
       'Equivale a': 'Paquete Video Pro, 3 meses',
       'Facturación mensual': '$290 × 3',
       'Total del plan': '$870',
@@ -422,6 +441,7 @@ const plan3mPlans = [
     period: 'total · 3 meses',
     tagline: '$410 al mes. $1,169 si pagas el trimestre adelantado.',
     features: {
+      'Parrilla de contenido mensual': '25 piezas.',
       'Equivale a': 'Combo Video Pro + Artes Pro, 3 meses',
       'Facturación mensual': '$410 × 3',
       'Total del plan': '$1,230',
@@ -503,7 +523,7 @@ function PricingTable({ plans, notes }: { plans: Plan[]; notes?: string[] }) {
         </thead>
         <tbody>
           {featureKeys.map((key) => (
-            <tr key={key} className="em-price-row">
+            <tr key={key} className="em-price-row" data-parrilla={key === 'Parrilla de contenido mensual' || undefined}>
               <td className="em-price-key">{key}</td>
               {plans.map((plan) => {
                 const premium = plan.badge === 'Premium';
