@@ -310,18 +310,35 @@ export const homeProjects = HOME_SLUGS.map(
   (slug) => projects.find((project) => project.slug === slug)!
 ).filter(Boolean);
 
-/** Stills the hero collage can actually decode. Skip hashed filenames
- *  (`#` → unoptimized 8–11MB originals) and cap each project. */
-export const clusterStills = homeProjects.flatMap((project) => {
-  const images = project.media.filter(
-    (item) => item.kind === 'image' && !item.src.includes('%23')
-  );
-  const cap =
-    project.slug === 'andybeauty' ? 3 : project.slug === 'yaxhe' ? 3 : 2;
+function clusterShot(slug: string, src: string) {
+  const project = projects.find((item) => item.slug === slug);
+  return {
+    src: pub(src),
+    title: project?.title ?? slug,
+    tag: project?.category ?? '',
+  };
+}
 
-  return images.slice(0, cap).map((item) => ({
-    src: item.src,
-    title: project.title,
-    tag: project.category,
-  }));
-});
+/** Curated hero collage: concert, salon, Yaxhe and Jalisco — no Zepeda. */
+export const clusterStills = [
+  clusterShot(
+    'esen-music',
+    '/img_portafolio/eventobenefico_esenmusic_universidad_esen_el_salvador/ESE_4892.webp'
+  ),
+  clusterShot('andybeauty', '/img_portafolio/andybeauty/_DSC6890.webp'),
+  clusterShot(
+    'esen-music',
+    '/img_portafolio/eventobenefico_esenmusic_universidad_esen_el_salvador/ESE_5437.webp'
+  ),
+  clusterShot('yaxhe', '/img_portafolio/yaxhe_1.webp'),
+  clusterShot(
+    'esen-music',
+    '/img_portafolio/eventobenefico_esenmusic_universidad_esen_el_salvador/ESE_3431.webp'
+  ),
+  clusterShot(
+    'jalisco',
+    '/img_portafolio/sesion_fotos_de_platos_de_comida/taqueriajalisco/FOTO #1.webp'
+  ),
+  clusterShot('andybeauty', '/img_portafolio/andybeauty/_DSC6900.webp'),
+  clusterShot('yaxhe', '/img_portafolio/yaxhe 3 (1).webp'),
+];
