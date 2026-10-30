@@ -88,9 +88,9 @@ export const projects: Project[] = [
     summary:
       'Fotografía de producto y un video vertical para una marca de bebidas. Una pieza para el feed, otra para que el producto se mueva solo.',
     services: ['Fotografía de producto', 'Video vertical', 'Colorización'],
-    cover: img('/img_portafolio/froozy/1.jpg', 'Froozy — fotografía de producto'),
+    cover: img('/img_portafolio/froozy/1.webp', 'Froozy — fotografía de producto'),
     media: [
-      img('/img_portafolio/froozy/1.jpg', 'Froozy — producto'),
+      img('/img_portafolio/froozy/1.webp', 'Froozy — producto'),
       vid('/videos_vertical_portafolio/video_froozy/FROZZY (1).mp4', 'Froozy — video de producto'),
     ],
   },
@@ -104,25 +104,25 @@ export const projects: Project[] = [
       'Expediente visual para un estudio de belleza: retrato de marca en el local, piezas de feed e historias y un video vertical listo para publicar. El servicio, el espacio y la dueña se leen como una sola marca.',
     services: ['Retrato de marca', 'Diseño de piezas', 'Historias', 'Video vertical'],
     cover: img(
-      '/img_portafolio/andybeauty/_DSC6890.jpg',
+      '/img_portafolio/andybeauty/_DSC6890.webp',
       'Andy Beauty — retrato de marca',
       0.667
     ),
     media: [
-      img('/img_portafolio/andybeauty/_DSC6890.jpg', 'Andy Beauty — retrato 01', 0.667),
-      img('/img_portafolio/andybeauty/_DSC6893.jpg', 'Andy Beauty — retrato 02', 0.667),
-      img('/img_portafolio/andybeauty/_DSC6900.jpg', 'Andy Beauty — retrato 03', 0.667),
-      img('/img_portafolio/andybeauty/_DSC6924.jpg', 'Andy Beauty — retrato 04', 0.64),
-      img('/img_portafolio/andybeauty/_DSC6926.jpg', 'Andy Beauty — retrato 05', 0.667),
-      img('/img_portafolio/andybeauty/_DSC6956.jpg', 'Andy Beauty — retrato 06', 0.667),
-      img('/img_portafolio/andybeauty/DSC_1155.jpg', 'Andy Beauty — estudio 01', 1.5),
-      img('/img_portafolio/andybeauty/_DSC6904.jpg', 'Andy Beauty — estudio 02', 1.5),
-      img('/img_portafolio/andybeauty/_DSC6930.jpg', 'Andy Beauty — estudio 03', 1.5),
-      img('/img_portafolio/andybeauty/_DSC6931.jpg', 'Andy Beauty — estudio 04', 1.5),
-      img('/img_portafolio/andybeauty/_DSC6934.jpg', 'Andy Beauty — estudio 05', 1.5),
-      img('/artes_y_historias/andybeauty/POST #1.jpg', 'Andy Beauty — post 01', 0.75),
-      img('/artes_y_historias/andybeauty/HISTORIA #1.jpg', 'Andy Beauty — historia 01', 0.5625),
-      img('/artes_y_historias/andybeauty/HISTORIA #2.jpg', 'Andy Beauty — historia 02', 0.5625),
+      img('/img_portafolio/andybeauty/_DSC6890.webp', 'Andy Beauty — retrato 01', 0.667),
+      img('/img_portafolio/andybeauty/_DSC6893.webp', 'Andy Beauty — retrato 02', 0.667),
+      img('/img_portafolio/andybeauty/_DSC6900.webp', 'Andy Beauty — retrato 03', 0.667),
+      img('/img_portafolio/andybeauty/_DSC6924.webp', 'Andy Beauty — retrato 04', 0.64),
+      img('/img_portafolio/andybeauty/_DSC6926.webp', 'Andy Beauty — retrato 05', 0.667),
+      img('/img_portafolio/andybeauty/_DSC6956.webp', 'Andy Beauty — retrato 06', 0.667),
+      img('/img_portafolio/andybeauty/DSC_1155.webp', 'Andy Beauty — estudio 01', 1.5),
+      img('/img_portafolio/andybeauty/_DSC6904.webp', 'Andy Beauty — estudio 02', 1.5),
+      img('/img_portafolio/andybeauty/_DSC6930.webp', 'Andy Beauty — estudio 03', 1.5),
+      img('/img_portafolio/andybeauty/_DSC6931.webp', 'Andy Beauty — estudio 04', 1.5),
+      img('/img_portafolio/andybeauty/_DSC6934.webp', 'Andy Beauty — estudio 05', 1.5),
+      img('/artes_y_historias/andybeauty/POST #1.webp', 'Andy Beauty — post 01', 0.75),
+      img('/artes_y_historias/andybeauty/HISTORIA #1.webp', 'Andy Beauty — historia 01', 0.5625),
+      img('/artes_y_historias/andybeauty/HISTORIA #2.webp', 'Andy Beauty — historia 02', 0.5625),
       vid(
         '/videos_vertical_portafolio/videos_andybeauty/video 1 - andy beauty.mp4',
         'Andy Beauty — video de marca'
@@ -138,57 +138,57 @@ export const projects: Project[] = [
     summary:
       'Expediente completo para un restaurante: artes de feed e historias, sesión de platos y videos cortos listos para publicar. La marca se reconoce en gráfico, en foto y en movimiento.',
     services: ['Fotografía de producto', 'Video', 'Diseño de piezas', 'Historias'],
-    cover: img('/artes_y_historias/post/POST #1.jpg', 'Taquería Jalisco — pieza de feed', 1),
+    cover: img('/artes_y_historias/post/POST #1.webp', 'Taquería Jalisco — pieza de feed', 1),
     media: [
-      img('/artes_y_historias/post/POST #1.jpg', 'Jalisco — post 01', 1),
-      img('/artes_y_historias/post/POST #2.jpg', 'Jalisco — post 02', 1),
-      img('/artes_y_historias/post/POST #3.jpg', 'Jalisco — post 03', 1),
-      img('/artes_y_historias/post/POST #4.jpg', 'Jalisco — post 04', 1),
-      img('/artes_y_historias/post/POST #5.jpg', 'Jalisco — post 05', 1),
-      img('/artes_y_historias/historias/HISTORIA #1.jpg', 'Jalisco — historia 01', 0.5625),
-      img('/artes_y_historias/historias/HISTORIA #2.jpg', 'Jalisco — historia 02', 0.5625),
-      img('/artes_y_historias/historias/HISTORIA #3.jpg', 'Jalisco — historia 03', 0.5625),
-      img('/artes_y_historias/historias/HISTORIA #4.jpg', 'Jalisco — historia 04', 0.5625),
-      img('/artes_y_historias/historias/HISTORIA #5.jpg', 'Jalisco — historia 05', 0.5625),
-      img('/artes_y_historias/historias/HISTORIA #6.jpg', 'Jalisco — historia 06', 0.5625),
+      img('/artes_y_historias/post/POST #1.webp', 'Jalisco — post 01', 1),
+      img('/artes_y_historias/post/POST #2.webp', 'Jalisco — post 02', 1),
+      img('/artes_y_historias/post/POST #3.webp', 'Jalisco — post 03', 1),
+      img('/artes_y_historias/post/POST #4.webp', 'Jalisco — post 04', 1),
+      img('/artes_y_historias/post/POST #5.webp', 'Jalisco — post 05', 1),
+      img('/artes_y_historias/historias/HISTORIA #1.webp', 'Jalisco — historia 01', 0.5625),
+      img('/artes_y_historias/historias/HISTORIA #2.webp', 'Jalisco — historia 02', 0.5625),
+      img('/artes_y_historias/historias/HISTORIA #3.webp', 'Jalisco — historia 03', 0.5625),
+      img('/artes_y_historias/historias/HISTORIA #4.webp', 'Jalisco — historia 04', 0.5625),
+      img('/artes_y_historias/historias/HISTORIA #5.webp', 'Jalisco — historia 05', 0.5625),
+      img('/artes_y_historias/historias/HISTORIA #6.webp', 'Jalisco — historia 06', 0.5625),
       img(
-        '/img_portafolio/sesion_fotos_de_platos_de_comida/taqueriajalisco/FOTO #1.jpg',
+        '/img_portafolio/sesion_fotos_de_platos_de_comida/taqueriajalisco/FOTO #1.webp',
         'Jalisco — plato 01'
       ),
       img(
-        '/img_portafolio/sesion_fotos_de_platos_de_comida/taqueriajalisco/FOTO #2.jpg',
+        '/img_portafolio/sesion_fotos_de_platos_de_comida/taqueriajalisco/FOTO #2.webp',
         'Jalisco — plato 02'
       ),
       img(
-        '/img_portafolio/sesion_fotos_de_platos_de_comida/taqueriajalisco/FOTO #3.jpg',
+        '/img_portafolio/sesion_fotos_de_platos_de_comida/taqueriajalisco/FOTO #3.webp',
         'Jalisco — plato 03'
       ),
       img(
-        '/img_portafolio/sesion_fotos_de_platos_de_comida/taqueriajalisco/FOTO #4.jpg',
+        '/img_portafolio/sesion_fotos_de_platos_de_comida/taqueriajalisco/FOTO #4.webp',
         'Jalisco — plato 04'
       ),
       img(
-        '/img_portafolio/sesion_fotos_de_platos_de_comida/taqueriajalisco/FOTO #5.jpg',
+        '/img_portafolio/sesion_fotos_de_platos_de_comida/taqueriajalisco/FOTO #5.webp',
         'Jalisco — plato 05'
       ),
       img(
-        '/img_portafolio/sesion_fotos_de_platos_de_comida/taqueriajalisco/FOTO #6.jpg',
+        '/img_portafolio/sesion_fotos_de_platos_de_comida/taqueriajalisco/FOTO #6.webp',
         'Jalisco — plato 06'
       ),
       img(
-        '/img_portafolio/sesion_fotos_de_platos_de_comida/taqueriajalisco/FOTO #7.jpg',
+        '/img_portafolio/sesion_fotos_de_platos_de_comida/taqueriajalisco/FOTO #7.webp',
         'Jalisco — plato 07'
       ),
       img(
-        '/img_portafolio/sesion_fotos_de_platos_de_comida/taqueriajalisco/FOTO #8.jpg',
+        '/img_portafolio/sesion_fotos_de_platos_de_comida/taqueriajalisco/FOTO #8.webp',
         'Jalisco — plato 08'
       ),
       img(
-        '/img_portafolio/sesion_fotos_de_platos_de_comida/taqueriajalisco/FOTO #9.jpg',
+        '/img_portafolio/sesion_fotos_de_platos_de_comida/taqueriajalisco/FOTO #9.webp',
         'Jalisco — plato 09'
       ),
       img(
-        '/img_portafolio/sesion_fotos_de_platos_de_comida/taqueriajalisco/FOTO #10.jpg',
+        '/img_portafolio/sesion_fotos_de_platos_de_comida/taqueriajalisco/FOTO #10.webp',
         'Jalisco — plato 10'
       ),
       vid(
@@ -211,16 +211,16 @@ export const projects: Project[] = [
       'Sesión de retrato con luz controlada y colorización propia. Entregables listos para marca personal, feed y prensa.',
     services: ['Retrato', 'Colorización', 'Retoque'],
     cover: img(
-      '/img_portafolio/sesiondefotos_zepeda/_DSC7031 (1).jpg',
+      '/img_portafolio/sesiondefotos_zepeda/_DSC7031 (1).webp',
       'Zepeda — retrato de sesión'
     ),
     media: [
-      img('/img_portafolio/sesiondefotos_zepeda/_DSC7031 (1).jpg', 'Zepeda — 01'),
-      img('/img_portafolio/sesiondefotos_zepeda/_DSC7038 (1).jpg', 'Zepeda — 02'),
-      img('/img_portafolio/sesiondefotos_zepeda/_DSC7056 (1).jpg', 'Zepeda — 03'),
-      img('/img_portafolio/sesiondefotos_zepeda/_DSC7062 (1).jpg', 'Zepeda — 04'),
-      img('/img_portafolio/sesiondefotos_zepeda/_DSC7077 (1).jpg', 'Zepeda — 05'),
-      img('/img_portafolio/sesiondefotos_zepeda/_DSC7086.jpg', 'Zepeda — 06'),
+      img('/img_portafolio/sesiondefotos_zepeda/_DSC7031 (1).webp', 'Zepeda — 01'),
+      img('/img_portafolio/sesiondefotos_zepeda/_DSC7038 (1).webp', 'Zepeda — 02'),
+      img('/img_portafolio/sesiondefotos_zepeda/_DSC7056 (1).webp', 'Zepeda — 03'),
+      img('/img_portafolio/sesiondefotos_zepeda/_DSC7062 (1).webp', 'Zepeda — 04'),
+      img('/img_portafolio/sesiondefotos_zepeda/_DSC7077 (1).webp', 'Zepeda — 05'),
+      img('/img_portafolio/sesiondefotos_zepeda/_DSC7086.webp', 'Zepeda — 06'),
     ],
   },
   {
